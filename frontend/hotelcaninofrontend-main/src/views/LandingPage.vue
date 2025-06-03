@@ -76,7 +76,7 @@ export default {
         localStorage.setItem('avatarUser', avatarUser);
         localStorage.setItem('userRole', userRole || 'user');
 
-        this.$router.push('/apresentacao').then(() => window.location.reload());
+        this.$router.push('/').then(() => window.location.reload());
       } catch (error) {
         this.errorMessage = error.response?.data?.message || 'Erro ao tentar fazer login.';
       }
