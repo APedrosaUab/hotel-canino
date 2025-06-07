@@ -29,6 +29,10 @@ body {
   margin: auto !important;
 }
 
+.bg-dark.text-light {
+  background-color: #fefae0!important;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
