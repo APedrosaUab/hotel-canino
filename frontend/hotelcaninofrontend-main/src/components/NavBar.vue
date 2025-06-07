@@ -34,11 +34,11 @@
             <li><router-link class="dropdown-item" to="/condicoes">Condições</router-link></li>
           </ul>
         </li>
-        <li class="nav-item dropdown" v-if="isAuthenticated">
+        <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Reservas</a>
           <ul class="dropdown-menu">
             <li><router-link class="dropdown-item" to="/calendario">Calendário</router-link></li>
-            <li><router-link class="dropdown-item" to="/reservar">Reservar</router-link></li>
+            <li v-if="isAuthenticated"><router-link class="dropdown-item" to="/reservar">Reservar</router-link></li>
           </ul>
         </li>
         <li class="nav-item">
