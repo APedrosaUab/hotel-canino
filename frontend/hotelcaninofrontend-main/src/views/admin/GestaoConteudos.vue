@@ -13,7 +13,8 @@
         </button>
       </div>
 
-      <table v-if="conteudos.length" class="table table-bordered bg-white text-dark shadow-sm">
+      <!-- Tabela de Conteúdos com Paginação -->
+      <table v-if="pagedConteudos.length" class="table table-bordered bg-white text-dark shadow-sm mb-3">
         <thead class="table-warning text-dark text-center">
           <tr>
             <th>Título</th>
@@ -23,20 +24,15 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="c in conteudos" :key="c._id">
+          <tr v-for="c in pagedConteudos" :key="c._id">
             <td>{{ c.titulo || '—' }}</td>
             <td>{{ formatarTipo(c.tipo) || '—' }}</td>
             <td>{{ formatDate(c.atualizadoEm) }}</td>
             <td class="text-center">
-              <button
-                class="btn btn-sm btn-outline-warning m-1"
-                data-bs-toggle="modal"
-                data-bs-target="#conteudoModal"
-                @click="abrirEdicao(c)"
-              >
+              <button class="btn btn-sm btn-outline-warning m-1" data-bs-toggle="modal" data-bs-target="#conteudoModal" @click="abrirEdicao(c)">
                 Editar
               </button>
-              <button class="btn btn-sm btn-outline-danger" @click="eliminar(c._id)" :disabled="isPrimeiro(c)">
+              <button class="btn btn-sm btn-outline-danger m-1" @click="eliminar(c._id)" :disabled="isPrimeiro(c)">
                 Eliminar
               </button>
             </td>
@@ -44,10 +40,25 @@
         </tbody>
       </table>
 
+      <!-- Paginação -->
+      <nav v-if="totalPages > 1" aria-label="Paginação" class="mt-4">
+        <ul class="pagination justify-content-center">
+          <li class="page-item" :class="{ disabled: currentPage === 1 }">
+            <a class="page-link" href="#" @click.prevent="changePage(currentPage - 1)">&laquo;</a>
+          </li>
+          <li class="page-item" v-for="page in pages" :key="page" :class="{ active: page === currentPage }">
+            <a class="page-link" href="#" @click.prevent="changePage(page)">{{ page }}</a>
+          </li>
+          <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+            <a class="page-link" href="#" @click.prevent="changePage(currentPage + 1)">&raquo;</a>
+          </li>
+        </ul>
+      </nav>
+
       <div v-if="erro" class="alert alert-danger mt-3 text-center">{{ erro }}</div>
     </div>
 
-    <!-- Modal -->
+    <!-- Modal de Criação/Edição -->
     <div class="modal fade" id="conteudoModal" tabindex="-1">
       <div class="modal-dialog modal-xl">
         <div class="modal-content text-dark bg-light">
@@ -66,8 +77,10 @@
                 <select v-model="form.tipo" class="form-select" :disabled="modo === 'editar'" required>
                   <option disabled value="">Selecione um tipo</option>
                   <option value="apresentacao">Apresentação</option>
-                  <option disabled value="instalacoes">Instalações</option>
-                  <option disabled value="servicos">Serviços</option>
+                  <option value="Eventos">Eventos</option>
+                  <option value="Notícias">Notícias</option>
+                  <option value="Promoções">Promoções</option>
+                  <option value="Outras informações">Outras informações</option>
                 </select>
               </div>
               <div class="mb-3">
@@ -99,13 +112,23 @@ export default {
       conteudos: [],
       erro: '',
       modo: 'criar',
-      form: {
-        titulo: '',
-        tipo: '',
-        corpo: ''
-      },
-      conteudoAtualId: null
+      form: { titulo: '', tipo: '', corpo: '' },
+      conteudoAtualId: null,
+      currentPage: 1,
+      pageSize: 10
     };
+  },
+  computed: {
+    totalPages() {
+      return Math.ceil(this.conteudos.length / this.pageSize);
+    },
+    pages() {
+      return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+    },
+    pagedConteudos() {
+      const start = (this.currentPage - 1) * this.pageSize;
+      return this.conteudos.slice(start, start + this.pageSize);
+    }
   },
   mounted() {
     this.carregarConteudos();
@@ -130,13 +153,13 @@ export default {
     formatDate(data) {
       return data ? new Date(data).toLocaleDateString('pt-PT') : '—';
     },
+    changePage(page) {
+      if (page < 1 || page > this.totalPages) return;
+      this.currentPage = page;
+    },
     abrirCriacao() {
       this.modo = 'criar';
-      this.form = {
-        titulo: '',
-        tipo: '',
-        corpo: ''
-      };
+      this.form = { titulo: '', tipo: '', corpo: '' };
       this.erro = '';
       this.conteudoAtualId = null;
     },
@@ -156,12 +179,13 @@ export default {
         if (this.modo === 'editar' && this.conteudoAtualId) {
           res = await axios.put(`${process.env.VUE_APP_BACKEND_URL}/conteudos/${this.conteudoAtualId}`, this.form);
           const index = this.conteudos.findIndex(c => c._id === this.conteudoAtualId);
-          if (index !== -1) this.conteudos[index] = res.data.conteudo;
+          if (index !== -1) this.$set(this.conteudos, index, res.data.conteudo);
         } else {
           res = await axios.post(`${process.env.VUE_APP_BACKEND_URL}/conteudos`, this.form);
           this.conteudos.push(res.data.conteudo);
         }
         this.erro = '';
+        // Fecha o modal ao guardar
         const modalEl = document.getElementById('conteudoModal');
         const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
         modal.hide();
@@ -191,15 +215,28 @@ export default {
   background-color: #fefae0;
   color: #2e2e2e;
 }
-
 .painel-conteudos {
   background-color: #ffffff;
   border-radius: 12px;
 }
-
 .page-title {
   color: #4ecdc4;
   font-weight: 700;
   font-size: 2.2rem;
+}
+/* Paginação */
+.pagination .page-item .page-link {
+  color: #4ecdc4;
+}
+.pagination .page-item.active .page-link {
+  background-color: #4ecdc4;
+  border-color: #4ecdc4;
+  color: #fff!important;
+}
+.pagination .page-item.disabled .page-link {
+  color: #ccc;
+}
+.table {
+  margin-bottom: 0;
 }
 </style>

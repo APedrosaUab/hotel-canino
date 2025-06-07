@@ -3,51 +3,59 @@
     <h1 class="page-title text-center mb-4">Condições de Alojamento</h1>
 
     <p class="lead text-center mb-5">
-      Para garantir o bem-estar de todos os nossos hóspedes, definimos um conjunto de regras simples mas fundamentais.
+      Para garantir o bem-estar de todos os nossos hóspedes, definimos um conjunto de regras claras, pensadas para proteger a saúde, segurança e conforto dos cães.
     </p>
 
     <div class="condicoes-bloco">
       <h4>📋 Requisitos de Saúde</h4>
       <p>
-        Todos os cães devem estar <strong>vacinados</strong> contra raiva, esgana, parvovirose e tosse do canil. É obrigatória a apresentação
-        do <strong>boletim de vacinas atualizado</strong> no momento do check-in. Recomendamos também a aplicação de antiparasitários externos
-        antes da estadia.
+        Todos os cães devem estar <strong>vacinados</strong> contra raiva, esgana, parvovirose e tosse do canil, com o <strong>boletim de vacinas atualizado</strong> apresentado no check-in. É obrigatório também um comprovativo de desparasitação interna (últimos 6 meses) e externa (últimos 30 dias). Em caso de alterações no estado de saúde durante a estadia, iremos contactar o tutor e, se necessário, encaminhar o cão para atendimento veterinário de urgência.
       </p>
     </div>
 
     <div class="condicoes-bloco">
       <h4>🛏️ Itens Obrigatórios</h4>
       <p>
-        Cada hóspede deve trazer a sua <strong>ração habitual</strong> e, opcionalmente, uma manta ou brinquedo pessoal.
-        O objetivo é garantir o conforto emocional durante a estadia.
+        Cada hóspede deve trazer a sua <strong>ração habitual</strong> em quantidade suficiente para toda a estadia, embalagens originais e instruções de alimentação. Recomendamos incluir uma manta ou brinquedo favorito para conforto emocional. Itens extra como toalhas, coleiras adicionais ou medicamentos de uso diário devem ser entregues na receção com descrição e posologia.
       </p>
     </div>
 
     <div class="condicoes-bloco">
-      <h4>🐶 Comportamento</h4>
+      <h4>🐶 Comportamento e Socialização</h4>
       <p>
-        Aceitamos cães sociáveis e bem integrados com humanos. Cães com historial de agressividade deverão ser avaliados previamente.
-        Os cães que não se adaptarem ao ambiente do hotel poderão ser devolvidos antecipadamente ao tutor.
+        Aceitamos cães sociáveis e sem histórico de agressividade grave. Todos passam por avaliação comportamental à chegada. Cães tímidos ou ansiosos terão adaptação gradual, enquanto cães com comportamentos ofensivos serão encaminhados para sessões individuais. A socialização em grupo é facultativa e realizada em áreas específicas, sempre sob supervisão. Garantimos reforço positivo e nunca aplicamos métodos aversivos.
       </p>
     </div>
 
     <div class="condicoes-bloco">
-      <h4>⏱️ Horários</h4>
+      <h4>⏱️ Horários de Entrada e Saída</h4>
       <p>
-        Check-in: das <strong>8h às 12h</strong> | Check-out: até às <strong>18h</strong>. Entradas ou saídas fora deste horário apenas com agendamento prévio.
+        <strong>Check-in:</strong> das 8h às 12h;<br />
+        <strong>Check-out:</strong> até às 18h.<br />
+        Chegadas ou partidas fora deste horário requerem agendamento prévio e poderão implicar custos adicionais. Em feriados e fins de semana, consulte horários especiais.
       </p>
     </div>
 
     <div class="condicoes-bloco">
-      <h4>💶 Cancelamentos</h4>
+      <h4>💶 Política de Cancelamento</h4>
       <p>
-        Cancelamentos devem ser comunicados com <strong>mínimo de 48h de antecedência</strong> para reembolso total. Em caso de não comparência,
-        será cobrada a primeira diária.
+        Cancelamentos comunicados com <strong>48h de antecedência</strong> garantem reembolso total. Para cancelamentos entre 24h e 48h, oferta de crédito para futura reserva. Cancelamentos com menos de 24h ou não comparência implicam cobrança da primeira diária completa. Alterações de datas sujeitas à disponibilidade.
       </p>
+    </div>
+
+    <div class="condicoes-bloco">
+      <h4>📜 Regulamentos Complementares</h4>
+      <ul>
+        <li>Não é permitido trazer alimentos humanos não aprovados pelo staff.</li>
+        <li>Objetos frágeis ou de valor elevado são de responsabilidade do tutor.</li>
+        <li>Visitas de familiares devem ser agendadas e limitadas a horários pré-definidos.</li>
+        <li>Em caso de emergência, o tutor será contactado através dos números fornecidos.</li>
+      </ul>
     </div>
 
     <p class="text-center mt-5">
-      Em caso de dúvida, por favor <router-link to="/contactos" class="link-contacto">entre em contacto connosco</router-link>.
+      Em caso de dúvida, por favor <router-link to="/contactos" class="link-contacto">entre em contacto connosco</router-link>.<br/>
+      Estamos sempre disponíveis para esclarecer quaisquer questões e personalizar a sua experiência.
     </p>
   </div>
 </template>
@@ -67,14 +75,12 @@ export default {
   color: #2e2e2e;
 }
 
-/* Título principal */
 .page-title {
   color: #4ecdc4;
   font-weight: 700;
   font-size: 2.4rem;
 }
 
-/* Blocos */
 .condicoes-bloco {
   margin-bottom: 2.5rem;
   padding: 15px 20px;
@@ -91,28 +97,30 @@ export default {
   font-weight: 600;
 }
 
-.condicoes-bloco p {
+.condicoes-bloco p,
+.condicoes-bloco ul {
   font-size: 1rem;
   line-height: 1.6;
 }
 
-/* Link */
+.condicoes-bloco ul {
+  padding-left: 1.2rem;
+  list-style-type: disc;
+}
+
 .link-contacto {
   color: #4ecdc4;
   font-weight: 600;
   text-decoration: underline;
 }
-
 .link-contacto:hover {
   text-decoration: none;
 }
 
-/* Responsivo */
 @media (max-width: 768px) {
   .page-title {
     font-size: 2rem;
   }
-
   .condicoes-bloco {
     padding: 15px;
   }

@@ -58,13 +58,13 @@ app.post("/login", async (req, res) => {
     await utilizador.save();
 
     res.json({
-  message: "Login bem-sucedido.",
-  sessionToken,
-  username: utilizador.username,
-  id_utilizador: utilizador._id,
-  avatarUser: utilizador.avatarUser,
-  userRole: utilizador.username === 'admin' ? 'admin' : 'user'
-});
+      message: "Login bem-sucedido.",
+      sessionToken,
+      username: utilizador.username,
+      id_utilizador: utilizador._id,
+      avatarUser: utilizador.avatarUser,
+      userRole: utilizador.username === 'admin' ? 'admin' : 'user'
+    });
   } catch {
     res.status(500).json({ message: "Erro ao realizar login." });
   }
@@ -245,6 +245,34 @@ app.get("/reservas", async (req, res) => {
   }
 });
 
+// GET /reservas?page=1&limit=10
+app.get('/reservas', async (req, res) => {
+  const page  = Math.max(1, parseInt(req.query.page)  || 1);
+  const limit = Math.max(1, parseInt(req.query.limit) || 10);
+  try {
+    const [items, total] = await Promise.all([
+      Reserva.find()
+        .populate('id_cao', 'nome raca')
+        .populate('id_utilizador', 'nome apelido')
+        .sort({ data_inicio: -1 })
+        .skip((page - 1) * limit)
+        .limit(limit),
+      Reserva.countDocuments()
+    ]);
+    res.json({
+      items,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit)
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ message: 'Erro ao obter reservas.' });
+  }
+});
+
 // Obter uma reserva por ID
 app.get("/reserva/:id", async (req, res) => {
   try {
@@ -281,7 +309,6 @@ app.delete("/reservas/:id", async (req, res) => {
   }
 });
 
-
 // === Conteúdos ===
 app.get("/conteudos", async (req, res) => {
   try {
@@ -289,6 +316,32 @@ app.get("/conteudos", async (req, res) => {
     res.json(conteudos);
   } catch {
     res.status(500).json({ message: "Erro ao obter conteúdos." });
+  }
+});
+
+// GET /conteudos?page=1&limit=10
+app.get('/conteudos', async (req, res) => {
+  const page  = Math.max(1, parseInt(req.query.page)  || 1);
+  const limit = Math.max(1, parseInt(req.query.limit) || 10);
+  try {
+    const [items, total] = await Promise.all([
+      Conteudo.find()
+        .sort({ criadoEm: -1 })
+        .skip((page - 1) * limit)
+        .limit(limit),
+      Conteudo.countDocuments()
+    ]);
+    res.json({
+      items,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit)
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ message: 'Erro ao obter conteúdos.' });
   }
 });
 
@@ -302,6 +355,15 @@ app.get("/conteudos/tipo/:tipo", async (req, res) => {
   } catch {
     res.status(500).json({ message: "Erro ao obter conteúdos por tipo." });
   }
+});
+
+// Rota para múltiplos tipos na Homepage
+app.get("/conteudos/homepage", async (req, res) => {
+  const tipos = ["Eventos", "Notícias", "Promoções", "Outras informações"];
+  const conteudos = await Conteudo
+    .find({ tipo: { $in: tipos } })
+    .sort({ createdAt: -1 });
+  res.json(conteudos);
 });
 
 app.post("/conteudos", async (req, res) => {
@@ -389,6 +451,45 @@ app.get("/calendario/ocupacoes", async (req, res) => {
   }
 });
 
+// === Dashboard ===
+app.get('/admin/stats', async (req, res) => {
+  try {
+    // Totais
+    const totalUsers = await Utilizador.countDocuments();
+    const totalRes = await Reserva.countDocuments();
+    const totalContent = await Conteudo.countDocuments();
+
+    // Utilizador com mais reservas
+    const agg = await Reserva.aggregate([
+      { $group: { _id: '$id_utilizador', count: { $sum: 1 } } },
+      { $sort: { count: -1 } },
+      { $limit: 1 },
+      {
+        $lookup: {
+          from: 'utilizadores', // ← CORREÇÃO: era 'utilizadors', agora é 'utilizadores'
+          localField: '_id',
+          foreignField: '_id',
+          as: 'user'
+        }
+      },
+      { $unwind: '$user' },
+      { $project: { username: '$user.username', count: 1 } }
+    ]);
+    const topUser = agg.length ? `${agg[0].username} (${agg[0].count})` : '–';
+
+    const statsArray = [
+      { label: 'Total de Utilizadores', value: totalUsers },
+      { label: 'Total de Reservas', value: totalRes },
+      { label: 'Total de Conteúdos', value: totalContent },
+      { label: 'Utilizador Top', value: topUser }
+    ];
+
+    res.json({ stats: statsArray });
+  } catch (error) {
+    console.error('Erro ao obter estatísticas:', error);
+    res.status(500).json({ message: 'Erro ao obter estatísticas.' });
+  }
+});
 
 app.listen(3000, () => {
   console.log("Servidor a funcionar na porta 3000");

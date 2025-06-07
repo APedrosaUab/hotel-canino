@@ -1,52 +1,90 @@
 <template>
   <div class="pc-precos container">
-    <h1 class="page-title text-center mb-4">Tabela de Preços</h1>
+    <h1 class="page-title text-center mb-4">Opções e Preços</h1>
 
     <p class="lead text-center mb-5">
-      Descubra os nossos serviços premium a preços acessíveis, pensados para o bem-estar do seu melhor amigo.
+      Serviços cuidadosamente planeados para oferecer conforto e segurança ao seu cão, com tarifas claras e sem surpresas.
     </p>
 
-    <div class="table-responsive">
-      <table class="table table-bordered table-hover bg-white text-dark shadow rounded">
-        <thead class="table-warning text-dark text-center">
-          <tr>
-            <th style="width: 20%">Serviço</th>
-            <th>Descrição</th>
-            <th style="width: 15%">Preço</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Alojamento Diário</strong></td>
-            <td>Inclui box individual, alimentação e passeio supervisionado</td>
-            <td class="text-center">15€ / dia</td>
-          </tr>
-          <tr>
-            <td><strong>Alojamento Semana Completa</strong></td>
-            <td>7 dias com desconto (ideal para férias prolongadas)</td>
-            <td class="text-center">90€</td>
-          </tr>
-          <tr>
-            <td><strong>Banho e Secagem</strong></td>
-            <td>Com produtos hipoalergénicos e ambiente climatizado</td>
-            <td class="text-center">18€</td>
-          </tr>
-          <tr>
-            <td><strong>Tosquia</strong></td>
-            <td>Corte completo com máquina e tesoura, personalizado</td>
-            <td class="text-center">25€</td>
-          </tr>
-          <tr>
-            <td><strong>Transporte</strong></td>
-            <td>Ida e volta até 15 km do hotel (requer marcação prévia)</td>
-            <td class="text-center">10€</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="row">
+      <!-- Alojamento Diário -->
+      <div class="col-md-6 mb-4">
+        <div class="card h-100 shadow-sm border-accent">
+          <div class="card-body">
+            <h4 class="card-title text-accent">Alojamento Diário</h4>
+            <p class="card-text">
+              O seu cão terá o próprio espaço com cama ergonómica, manta macia e água fresca disponível 24/7. Inclui três refeições personalizadas e um passeio supervisionado por dia, para garantir bem-estar físico e mental.
+            </p>
+          </div>
+          <div class="card-footer text-center bg-accent-light">
+            <span class="price text-accent">15€</span> <small>/ dia</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alojamento Semanal -->
+      <div class="col-md-6 mb-4">
+        <div class="card h-100 shadow-sm border-accent">
+          <div class="card-body">
+            <h4 class="card-title text-accent">Alojamento Semanal</h4>
+            <p class="card-text">
+              Ideal para férias prolongadas: desconto especial em estadia contínua. Inclui atividades diárias de enriquecimento, sessões de brincadeira em grupo e relatório fotográfico semanal para que se sinta sempre perto.
+            </p>
+          </div>
+          <div class="card-footer text-center bg-accent-light">
+            <span class="price text-accent">90€</span> <small>/ semana</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Banho e Secagem -->
+      <div class="col-md-6 mb-4">
+        <div class="card h-100 shadow-sm border-accent">
+          <div class="card-body">
+            <h4 class="card-title text-accent">Banho & Secagem</h4>
+            <p class="card-text">
+              Tratamento completo com xampu hipoalergénico, massagem de relaxamento e secagem a jato suave. Inclui limpeza de orelhas e corte de unhas, para um acabamento impecável e saudável.
+            </p>
+          </div>
+          <div class="card-footer text-center bg-accent-light">
+            <span class="price text-accent">18€</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tosquia -->
+      <div class="col-md-6 mb-4">
+        <div class="card h-100 shadow-sm border-accent">
+          <div class="card-body">
+            <h4 class="card-title text-accent">Tosquia Personalizada</h4>
+            <p class="card-text">
+              Corte e modelagem adaptados à raça e ao estilo desejado. Utilizamos tesouras profissionais e máquinas silenciosas, garantindo conforto e precisão em cada contorno.
+            </p>
+          </div>
+          <div class="card-footer text-center bg-accent-light">
+            <span class="price text-accent">25€</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transporte -->
+      <div class="col-md-6 mb-4">
+        <div class="card h-100 shadow-sm border-accent">
+          <div class="card-body">
+            <h4 class="card-title text-accent">Transporte Porta a Porta</h4>
+            <p class="card-text">
+              Viatura climatizada e adaptada com cinto de segurança para cães, para recolha e entrega até 15 km. Serviço ideal para dar tranquilidade ao tutor e segurança ao seu amigo de quatro patas.
+            </p>
+          </div>
+          <div class="card-footer text-center bg-accent-light">
+            <span class="price text-accent">10€</span>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <p class="mt-4 text-center text-nota">
-      <strong>Notas:</strong> Pagamentos realizados preferencialmente no check-in. Todos os preços incluem IVA à taxa legal em vigor.
+    <p class="mt-4 text-center text-note">
+      <strong>Nota:</strong> Todos os preços incluem IVA. Para pacotes personalizados ou serviços adicionais (como alimentação terapêutica), entre em contacto connosco para um orçamento à medida.
     </p>
   </div>
 </template>
@@ -66,54 +104,50 @@ export default {
   color: #2e2e2e;
 }
 
-/* Título */
 .page-title {
   color: #4ecdc4;
   font-weight: 700;
   font-size: 2.4rem;
 }
 
-/* Tabela */
-.table {
-  background-color: #ffffff;
+.card {
+  border: none;
   border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
-.table th,
-.table td {
-  vertical-align: middle;
-  padding: 16px;
+.border-accent {
+  border: 2px solid #4ecdc4 !important;
 }
 
-.table thead {
-  background-color: #ffe66d !important;
+.card-body {
+  padding: 1.5rem;
 }
 
-.table-hover tbody tr:hover {
-  background-color: #f9f9f9;
+.card-footer {
+  padding: 0.75rem;
 }
 
-/* Nota final */
-.text-nota {
+.text-accent {
+  color: #4ecdc4;
+}
+
+.bg-accent-light {
+  background-color: rgba(78, 205, 196, 0.1);
+}
+
+.price {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.text-note {
   font-size: 0.95rem;
   color: #444;
 }
 
-/* Responsivo */
 @media (max-width: 768px) {
   .page-title {
     font-size: 2rem;
-  }
-
-  .table {
-    font-size: 0.9rem;
-  }
-
-  .table th,
-  .table td {
-    padding: 12px;
   }
 }
 </style>

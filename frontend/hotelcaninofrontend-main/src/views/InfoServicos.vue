@@ -10,8 +10,7 @@
       <div class="col-md-6">
         <h4 class="section-subtitle">Alojamento Diário e Prolongado</h4>
         <p>
-          O seu cão pode pernoitar em segurança, com acesso a alimentação de qualidade, vigilância contínua
-          e boxes confortáveis para descanso. Ideal para férias, viagens ou imprevistos.
+          Garantimos um ambiente seguro e confortável para estadias curtas ou prolongadas. Cada cão tem sua própria box climatizada e equipada com cama ergonômica, manta personalizada e brinquedos de conforto. Oferecemos alimentação de alta qualidade, preparada sob orientação nutricional, e monitorização 24/7 por câmaras e rondas da equipa. Ideal para férias, viagens de trabalho ou situações inesperadas, o seu melhor amigo estará sempre em boas mãos.
         </p>
       </div>
     </div>
@@ -24,8 +23,7 @@
       <div class="col-md-6">
         <h4 class="section-subtitle">Banhos e Tosquias Profissionais</h4>
         <p>
-          Higiene é bem-estar. Oferecemos banho com produtos hipoalergénicos e tosquias adaptadas à raça,
-          sempre realizadas por profissionais experientes e cuidadosos.
+          Cuidamos da higiene completa do seu cão com produtos dermatologicamente testados e sem fragrâncias agressivas. Oferecemos banhos relaxantes com sais calmantes, limpeza de ouvidos e corte de unhas, seguido de tosquias adaptadas à raça e às preferências do tutor. A nossa equipa de groomers avalia pelagem, pele e estado geral durante o processo, reportando qualquer anomalia para intervenção precoce.
         </p>
       </div>
     </div>
@@ -38,8 +36,7 @@
       <div class="col-md-6">
         <h4 class="section-subtitle">Atividades de Enriquecimento</h4>
         <p>
-          Jogos interativos, brinquedos educativos e sessões de socialização fazem parte do nosso plano de
-          enriquecimento diário. O objetivo? Estimular corpo e mente.
+          Incentivamos a estimulação mental e física através de jogos interativos, brinquedos de desafio e mini-circuitos de agilidade. As sessões individuais e em grupo são planeadas para promover aprendizagem, confiança e socialização. Cada atividade é monitorizada para ajustar a dificuldade e evitar frustrações, garantindo momentos de diversão e desenvolvimento cognitivo diário.
         </p>
       </div>
     </div>
@@ -50,10 +47,9 @@
         <img src="@/assets/images/servicos/servico4.png" alt="Passeios" class="img-fluid rounded shadow" />
       </div>
       <div class="col-md-6">
-        <h4 class="section-subtitle">Passeios Higiénicos</h4>
+        <h4 class="section-subtitle">Passeios Higiénicos e Seguros</h4>
         <p>
-          Os cães têm direito a até dois passeios diários, em espaço vedado e seguro, para fazerem as suas
-          necessidades e esticar as patas ao ar livre.
+          Cada cão tem direito a até dois passeios diários em áreas vedadas com piso antiderrapante e sombras naturais. Os passeios são conduzidos por cuidadores treinados, que incentivam comportamentos adequados e reforçam a obediência. Garantimos tempo suficiente para exercício, aproveitamento de estímulos externos e cuidados de higiene pessoal no regresso, mantendo o espaço sempre limpo.
         </p>
       </div>
     </div>
@@ -64,10 +60,9 @@
         <img src="@/assets/images/servicos/servico5.png" alt="Transporte" class="img-fluid rounded shadow" />
       </div>
       <div class="col-md-6">
-        <h4 class="section-subtitle">Serviço de Transporte</h4>
+        <h4 class="section-subtitle">Serviço de Transporte Porta a Porta</h4>
         <p>
-          Com marcação prévia, podemos recolher ou entregar o seu cão à porta de casa, garantindo segurança
-          e comodidade. Serviço ideal para tutores sem mobilidade ou tempo disponível.
+          Com viaturas equipadas e certificadas, oferecemos recolha e entrega do seu cão em casa ou no trabalho. O serviço inclui check-list de segurança, cinto de retenção canino e acompanhamento personalizado durante todo o trajeto. Ideal para tutores com horários apertados ou sem transporte próprio, garantindo comodidade e redução de stress para o animal.
         </p>
       </div>
     </div>
@@ -89,14 +84,12 @@ export default {
     color: #2e2e2e;
 }
 
-/* Título principal */
 .page-title {
   color: #4ecdc4;
   font-weight: 700;
   font-size: 2.6rem;
 }
 
-/* Subtítulos */
 .section-subtitle {
   color: #333333;
   font-weight: 600;
@@ -106,14 +99,12 @@ export default {
   padding-left: 12px;
 }
 
-/* Texto */
 p {
   font-size: 1.05rem;
   line-height: 1.7;
   margin-top: 10px;
 }
 
-/* Imagens */
 .img-fluid {
   width: 100%;
   max-height: 320px;
@@ -122,20 +113,10 @@ p {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-/* Responsivo */
 @media (max-width: 767px) {
-  .page-title {
-    font-size: 2.1rem;
-  }
-  .section-subtitle {
-    font-size: 1.2rem;
-  }
-  .img-fluid {
-    max-height: 240px;
-    margin-bottom: 1rem;
-  }
-  p {
-    font-size: 1rem;
-  }
+  .page-title { font-size: 2.1rem; }
+  .section-subtitle { font-size: 1.2rem; }
+  .img-fluid { max-height: 240px; margin-bottom: 1rem; }
+  p { font-size: 1rem; }
 }
 </style>

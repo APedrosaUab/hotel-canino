@@ -6,6 +6,8 @@ import Register from '@/views/Register.vue';
 import ResetPassword from '@/views/ResetPassword.vue';
 import Contactos from '@/views/Contactos.vue';
 
+import InfoHomepage from '@/views/Homepage.vue';
+
 // Área pessoal (utilizador autenticado)
 import MinhasReservas from '@/views/myarea/MinhasReservas.vue';
 import Perfil from '@/views/myarea/Perfil.vue';
@@ -38,6 +40,8 @@ const routes = [
   { path: '/reservar', name: 'DRReservar', component: DRReservar, meta: { requiresAuth: true } },
   { path: '/calendario', name: 'DRCalendario', component: DRCalendario, meta: { requiresAuth: true } },
 
+  { path: '/homepage', name: 'InfoHomepage', component: InfoHomepage },
+
   // Páginas de informação
   { path: '/apresentacao', name: 'InfoApresentacao', component: InfoApresentacao },
   { path: '/instalacoes', name: 'InfoInstalacoes', component: InfoInstalacoes },
@@ -65,7 +69,7 @@ router.beforeEach((to, from, next) => {
 
   // Redireciona utilizador autenticado se tentar aceder à landing page
   if (to.name === 'LandingPage' && isAuthenticated) {
-    next({ name: 'InfoApresentacao' });
+    next({ name: 'InfoHomepage' });
     return;
   }
 

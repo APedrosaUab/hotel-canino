@@ -10,7 +10,7 @@
       <div class="col-md-6">
         <h4 class="section-subtitle">Boxes Individuais Confortáveis</h4>
         <p>
-          Cada hóspede tem a sua própria box equipada com cama elevada, manta macia e sistema de ventilação. O espaço é acolhedor e higienizado diariamente, garantindo o conforto e o descanso que o seu cão merece.
+          Cada hóspede tem a sua própria box equipada com cama elevada, manta macia e sistema de ventilação. Este espaço foi projetado para oferecer privacidade e tranquilidade, permitindo que o seu cão descanse sem interrupções. As boxes são higienizadas várias vezes ao dia, garantindo um ambiente sempre limpo e livre de odores. Além disso, monitorizamos a temperatura interna para que o clima esteja sempre ideal, seja verão ou inverno.
         </p>
       </div>
     </div>
@@ -23,7 +23,7 @@
       <div class="col-md-6">
         <h4 class="section-subtitle">Áreas Exteriores com Atividades</h4>
         <p>
-          Dispomos de pátios com relva sintética onde os cães podem brincar, correr e socializar, sempre com supervisão profissional. Ideal para gastar energias e manter-se ativo durante a estadia.
+          As nossas áreas exteriores são amplas e seguras, com relva sintética de alta qualidade que permite brincadeiras sem lama. Organizamos jogos de busca e circuitos de agilidade, sempre com supervisão de treinadores certificados. Estas sessões estimulam o condicionamento físico e a mente do seu cão, ajudando a reduzir ansiedade e comportamentos destrutivos. Deixe-o gastar energia ao ar livre num ambiente controlado e divertido.
         </p>
       </div>
     </div>
@@ -36,7 +36,7 @@
       <div class="col-md-6">
         <h4 class="section-subtitle">Espaço de Convívio Supervisionado</h4>
         <p>
-          Para cães sociáveis, oferecemos sessões de interação num ambiente seguro e controlado. A sala de convívio estimula o bem-estar emocional dos nossos hóspedes e promove o comportamento positivo.
+          Para cães sociáveis, oferecemos sessões de interação num espaço interno acolhedor, com brinquedos e obstáculos. Estes encontros em pequenos grupos são conduzidos por profissionais, garantindo que todas as brincadeiras sejam seguras e respeitosas. O convívio estimula a socialização saudável, reforça comportamentos positivos e fortalece a confiança do seu cão ao interagir com outros animais. Um ambiente perfeito para desenvolver habilidades sociais enquanto se diverte.
         </p>
       </div>
     </div>
@@ -48,6 +48,7 @@ export default {
   name: 'InfoInstalacoes'
 };
 </script>
+
 <style scoped>
 .info-instalacoes {
     min-height: 80vh;
@@ -57,14 +58,12 @@ export default {
     color: #2e2e2e;
 }
 
-/* Título principal */
 .page-title {
   color: #4ecdc4;
   font-weight: 700;
   font-size: 2.6rem;
 }
 
-/* Subtítulos */
 .section-subtitle {
   color: #333333;
   font-weight: 600;
@@ -74,14 +73,12 @@ export default {
   padding-left: 12px;
 }
 
-/* Texto */
 p {
   font-size: 1.05rem;
   line-height: 1.7;
   margin-top: 10px;
 }
 
-/* Imagens */
 .img-fluid {
   width: 100%;
   max-height: 320px;
@@ -90,7 +87,6 @@ p {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-/* Responsivo */
 @media (max-width: 767px) {
   .page-title {
     font-size: 2.1rem;

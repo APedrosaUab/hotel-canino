@@ -5,7 +5,7 @@
 
       <div v-if="erro" class="alert alert-danger text-center">{{ erro }}</div>
 
-      <table class="table table-bordered table-striped bg-white text-dark shadow-sm">
+      <table v-if="pagedReservas.length" class="table table-bordered table-striped bg-white text-dark shadow-sm">
         <thead class="table-warning text-dark text-center">
           <tr>
             <th>Nome do Cão</th>
@@ -16,15 +16,25 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="reserva in reservas" :key="reserva._id">
+          <tr v-for="reserva in pagedReservas" :key="reserva._id">
             <td>{{ reserva.id_cao?.nome || 'N/D' }}</td>
             <td>{{ reserva.id_utilizador?.nome || 'N/D' }} {{ reserva.id_utilizador?.apelido || '' }}</td>
             <td>
-              <input v-if="editando[reserva._id]" type="date" v-model="editando[reserva._id].data_inicio" class="form-control" />
+              <input
+                v-if="editando[reserva._id]"
+                type="date"
+                v-model="editando[reserva._id].data_inicio"
+                class="form-control"
+              />
               <span v-else>{{ formatDate(reserva.data_inicio) }}</span>
             </td>
             <td>
-              <input v-if="editando[reserva._id]" type="date" v-model="editando[reserva._id].data_fim" class="form-control" />
+              <input
+                v-if="editando[reserva._id]"
+                type="date"
+                v-model="editando[reserva._id].data_fim"
+                class="form-control"
+              />
               <span v-else>{{ formatDate(reserva.data_fim) }}</span>
             </td>
             <td class="text-center">
@@ -41,25 +51,40 @@
           </tr>
         </tbody>
       </table>
-    </div>
-  </div>
 
-  <!-- Modal Ver Detalhes -->
-  <div class="modal fade" id="modalDetalhes" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content bg-light text-dark">
-        <div class="modal-header">
-          <h5 class="modal-title" id="modalLabel">Detalhes da Reserva</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-        </div>
-        <div class="modal-body" v-if="reservaSelecionada">
-          <p><strong>ID:</strong> {{ reservaSelecionada._id }}</p>
-          <p><strong>Cão:</strong> {{ reservaSelecionada.id_cao?.nome }} ({{ reservaSelecionada.id_cao?.raca }})</p>
-          <p><strong>Dono:</strong> {{ reservaSelecionada.id_utilizador?.nome }} {{ reservaSelecionada.id_utilizador?.apelido }}</p>
-          <p><strong>Email:</strong> {{ reservaSelecionada.id_utilizador?.email }}</p>
-          <p><strong>Entrada:</strong> {{ formatDate(reservaSelecionada.data_inicio) }}</p>
-          <p><strong>Saída:</strong> {{ formatDate(reservaSelecionada.data_fim) }}</p>
-          <p><strong>Observações:</strong> {{ reservaSelecionada.observacoes || 'Nenhuma' }}</p>
+      <!-- Paginação -->
+      <nav v-if="totalPages > 1" aria-label="Paginação" class="mt-4">
+        <ul class="pagination justify-content-center">
+          <li class="page-item" :class="{ disabled: currentPage === 1 }">
+            <a class="page-link" href="#" @click.prevent="changePage(currentPage - 1)">&laquo;</a>
+          </li>
+          <li class="page-item" v-for="page in pages" :key="page" :class="{ active: page === currentPage }">
+            <a class="page-link" href="#" @click.prevent="changePage(page)">{{ page }}</a>
+          </li>
+          <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+            <a class="page-link" href="#" @click.prevent="changePage(currentPage + 1)">&raquo;</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- Modal Ver Detalhes -->
+    <div class="modal fade" id="modalDetalhes" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content bg-light text-dark">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">Detalhes da Reserva</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+          </div>
+          <div class="modal-body" v-if="reservaSelecionada">
+            <p><strong>ID:</strong> {{ reservaSelecionada._id }}</p>
+            <p><strong>Cão:</strong> {{ reservaSelecionada.id_cao?.nome }} ({{ reservaSelecionada.id_cao?.raca }})</p>
+            <p><strong>Dono:</strong> {{ reservaSelecionada.id_utilizador?.nome }} {{ reservaSelecionada.id_utilizador?.apelido }}</p>
+            <p><strong>Email:</strong> {{ reservaSelecionada.id_utilizador?.email }}</p>
+            <p><strong>Entrada:</strong> {{ formatDate(reservaSelecionada.data_inicio) }}</p>
+            <p><strong>Saída:</strong> {{ formatDate(reservaSelecionada.data_fim) }}</p>
+            <p><strong>Observações:</strong> {{ reservaSelecionada.observacoes || 'Nenhuma' }}</p>
+          </div>
         </div>
       </div>
     </div>
@@ -77,8 +102,22 @@ export default {
       reservas: [],
       erro: '',
       editando: {},
-      reservaSelecionada: null
+      reservaSelecionada: null,
+      currentPage: 1,
+      pageSize: 10
     };
+  },
+  computed: {
+    totalPages() {
+      return Math.ceil(this.reservas.length / this.pageSize);
+    },
+    pages() {
+      return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+    },
+    pagedReservas() {
+      const start = (this.currentPage - 1) * this.pageSize;
+      return this.reservas.slice(start, start + this.pageSize);
+    }
   },
   mounted() {
     this.carregarReservas();
@@ -121,7 +160,10 @@ export default {
           data_fim: ed.data_fim
         });
         const reservaAtualizada = res.data.reserva;
-        this.reservas = this.reservas.map(r => r._id === id ? { ...reservaAtualizada, id_cao: ed.id_cao, id_utilizador: ed.id_utilizador } : r);
+        this.reservas = this.reservas.map(r => r._id === id
+          ? { ...reservaAtualizada, id_cao: ed.id_cao, id_utilizador: ed.id_utilizador }
+          : r
+        );
         this.editando = {};
       } catch {
         this.erro = 'Erro ao guardar alterações.';
@@ -135,6 +177,10 @@ export default {
       } catch {
         this.erro = 'Erro ao eliminar reserva.';
       }
+    },
+    changePage(page) {
+      if (page < 1 || page > this.totalPages) return;
+      this.currentPage = page;
     }
   }
 };
@@ -156,5 +202,18 @@ export default {
   color: #4ecdc4;
   font-weight: 700;
   font-size: 2.2rem;
+}
+
+/* Paginação */
+.pagination .page-item .page-link {
+  color: #4ecdc4;
+}
+.pagination .page-item.active .page-link {
+  background-color: #4ecdc4;
+  border-color: #4ecdc4;
+  color: #fff!important;
+}
+.pagination .page-item.disabled .page-link {
+  color: #ccc;
 }
 </style>
