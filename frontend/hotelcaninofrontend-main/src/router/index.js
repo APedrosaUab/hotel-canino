@@ -38,7 +38,7 @@ const routes = [
   { path: '/perfil', name: 'Perfil', component: Perfil, meta: { requiresAuth: true } },
   { path: '/minhas-reservas', name: 'MinhasReservas', component: MinhasReservas, meta: { requiresAuth: true } },
   { path: '/reservar', name: 'DRReservar', component: DRReservar, meta: { requiresAuth: true } },
-  { path: '/calendario', name: 'DRCalendario', component: DRCalendario, meta: { requiresAuth: true } },
+  { path: '/calendario', name: 'DRCalendario', component: DRCalendario }, // dispensa autenticação
 
   { path: '/homepage', name: 'InfoHomepage', component: InfoHomepage },
 
@@ -62,7 +62,7 @@ const router = createRouter({
   routes
 });
 
-// 🔐 Proteção de rotas
+// Proteção de rotas
 router.beforeEach((to, from, next) => {
   const isAuthenticated = !!localStorage.getItem('authToken');
   const isAdmin = localStorage.getItem('userRole') === 'admin';
