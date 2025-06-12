@@ -491,6 +491,14 @@ app.get('/admin/stats', async (req, res) => {
   }
 });
 
+const path = require('path');
+
+app.use(express.static(path.join(__dirname, 'dist')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
+
 app.listen(3000, () => {
   console.log("Servidor a funcionar na porta 3000");
 });
