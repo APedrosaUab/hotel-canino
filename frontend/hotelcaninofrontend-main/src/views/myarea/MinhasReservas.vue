@@ -112,7 +112,7 @@ export default {
 <style scoped>
 .minhas-reservas {
   min-height: 100vh;
-  background-color: #fefae0;
+  background-color: #f9f7ef;
   color: #2e2e2e;
 }
 
@@ -122,7 +122,7 @@ export default {
 }
 
 .page-title {
-  color: #4ecdc4;
+  color: #2a7f87;
   font-weight: 700;
   font-size: 2.2rem;
 }

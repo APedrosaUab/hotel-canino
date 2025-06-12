@@ -30,7 +30,7 @@ body {
 }
 
 .bg-dark.text-light {
-  background-color: #fefae0!important;
+  background-color: #f9f7ef!important;
 }
 
 #app {

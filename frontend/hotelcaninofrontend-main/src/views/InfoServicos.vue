@@ -5,7 +5,7 @@
     <!-- Serviço 1 -->
     <div class="row align-items-center mb-5">
       <div class="col-md-6">
-        <img src="@/assets/images/servicos/servico1.png" alt="Alojamento" class="img-fluid rounded shadow" />
+        <img src="@/assets/images/servicos/servico1.png" alt="Alojamento" class="img-fluid rounded shadow-sm" />
       </div>
       <div class="col-md-6">
         <h4 class="section-subtitle">Alojamento Diário e Prolongado</h4>
@@ -18,7 +18,7 @@
     <!-- Serviço 2 -->
     <div class="row align-items-center mb-5 flex-md-row-reverse">
       <div class="col-md-6">
-        <img src="@/assets/images/servicos/servico2.png" alt="Banhos e Tosquias" class="img-fluid rounded shadow" />
+        <img src="@/assets/images/servicos/servico2.png" alt="Banhos e Tosquias" class="img-fluid rounded shadow-sm" />
       </div>
       <div class="col-md-6">
         <h4 class="section-subtitle">Banhos e Tosquias Profissionais</h4>
@@ -31,7 +31,7 @@
     <!-- Serviço 3 -->
     <div class="row align-items-center mb-5">
       <div class="col-md-6">
-        <img src="@/assets/images/servicos/servico3.png" alt="Enriquecimento" class="img-fluid rounded shadow" />
+        <img src="@/assets/images/servicos/servico3.png" alt="Enriquecimento" class="img-fluid rounded shadow-sm" />
       </div>
       <div class="col-md-6">
         <h4 class="section-subtitle">Atividades de Enriquecimento</h4>
@@ -44,7 +44,7 @@
     <!-- Serviço 4 -->
     <div class="row align-items-center mb-5 flex-md-row-reverse">
       <div class="col-md-6">
-        <img src="@/assets/images/servicos/servico4.png" alt="Passeios" class="img-fluid rounded shadow" />
+        <img src="@/assets/images/servicos/servico4.png" alt="Passeios" class="img-fluid rounded shadow-sm" />
       </div>
       <div class="col-md-6">
         <h4 class="section-subtitle">Passeios Higiénicos e Seguros</h4>
@@ -57,7 +57,7 @@
     <!-- Serviço 5 -->
     <div class="row align-items-center mb-5">
       <div class="col-md-6">
-        <img src="@/assets/images/servicos/servico5.png" alt="Transporte" class="img-fluid rounded shadow" />
+        <img src="@/assets/images/servicos/servico5.png" alt="Transporte" class="img-fluid rounded shadow-sm" />
       </div>
       <div class="col-md-6">
         <h4 class="section-subtitle">Serviço de Transporte Porta a Porta</h4>
@@ -77,25 +77,25 @@ export default {
 
 <style scoped>
 .info-servicos {
-    min-height: 80vh;
-    padding: 20px;
-    margin: 20px auto;
-    background-color: #fefae0;
-    color: #2e2e2e;
+  min-height: 80vh;
+  padding: 20px;
+  margin: 20px auto;
+  background-color: #f9f7ef;
+  color: #2e2e2e;
 }
 
 .page-title {
-  color: #4ecdc4;
+  color: #2a7f87;
   font-weight: 700;
   font-size: 2.6rem;
 }
 
 .section-subtitle {
-  color: #333333;
-  font-weight: 600;
+  color: #2a7f87;
+  font-weight: 700;
   font-size: 1.4rem;
   margin-bottom: 12px;
-  border-left: 5px solid #ffe66d;
+  border-left: 5px solid #d49c68;
   padding-left: 12px;
 }
 
@@ -109,14 +109,28 @@ p {
   width: 100%;
   max-height: 320px;
   object-fit: cover;
-  border: 1px solid #ddd;
+  border: 1px solid #e0ded9;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
+}
+
+.img-fluid:hover {
+  transform: scale(1.02);
 }
 
 @media (max-width: 767px) {
-  .page-title { font-size: 2.1rem; }
-  .section-subtitle { font-size: 1.2rem; }
-  .img-fluid { max-height: 240px; margin-bottom: 1rem; }
-  p { font-size: 1rem; }
+  .page-title {
+    font-size: 2.1rem;
+  }
+  .section-subtitle {
+    font-size: 1.2rem;
+  }
+  .img-fluid {
+    max-height: 240px;
+    margin-bottom: 1rem;
+  }
+  p {
+    font-size: 1rem;
+  }
 }
 </style>

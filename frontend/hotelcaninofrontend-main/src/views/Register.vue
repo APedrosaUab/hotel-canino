@@ -1,9 +1,10 @@
 <template>
   <div class="register-page">
     <div class="register-form-container d-flex justify-content-center align-items-center">
-      <div class="register-form bg-dark text-white p-4 rounded shadow-lg">
-        <h3 class="text-center text-warning mb-4">Criar Conta no Hotel Canino</h3>
+      <div class="register-form p-4 rounded shadow-lg">
+        <h3 class="text-center mb-4">Criar Conta no Hotel Canino</h3>
         <form @submit.prevent="register">
+          <h5 class="section-label">🧍 Dados Pessoais</h5>
           <div class="row">
             <div class="col-md-6 mb-3 p-1">
               <input v-model="nome" type="text" class="form-control" placeholder="Nome" required />
@@ -17,12 +18,20 @@
             <div class="col-md-6 mb-3 p-1">
               <input v-model="dataNascimento" type="date" class="form-control" :max="maxDate" required />
             </div>
+          </div>
+
+          <h5 class="section-label">📧 Contacto</h5>
+          <div class="row">
             <div class="col-md-6 mb-3 p-1">
               <input v-model="email" type="email" class="form-control" placeholder="Email" required />
             </div>
             <div class="col-md-6 mb-3 p-1">
               <input v-model="confirmEmail" type="email" class="form-control" placeholder="Confirmar Email" required />
             </div>
+          </div>
+
+          <h5 class="section-label">🔒 Segurança</h5>
+          <div class="row">
             <div class="col-md-6 mb-3 p-1">
               <input v-model="password" type="password" class="form-control" placeholder="Password" required />
             </div>
@@ -31,8 +40,8 @@
             </div>
           </div>
 
+          <h5 class="section-label">🐾 Avatar</h5>
           <div class="mb-3">
-            <label class="form-label">Selecionar Avatar:</label>
             <div class="d-flex flex-wrap gap-2">
               <img
                 v-for="avatar in avataresDisponiveis"
@@ -129,13 +138,11 @@ export default {
   justify-content: center;
 }
 
-/* Container do formulário */
 .register-form-container {
   width: 100%;
   padding: 20px;
 }
 
-/* Formulário */
 .register-form {
   background-color: rgba(255, 255, 255, 0.96);
   color: #3a3a3a;
@@ -144,29 +151,41 @@ export default {
   padding: 40px 30px;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
-/* Título */
+.register-form:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
 .register-form h3 {
-  color: #4ecdc4;
+  color: #2a7f87;
   font-weight: 600;
 }
 
-/* Campos */
+.section-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2a7f87;
+  margin-top: 15px;
+  margin-bottom: 5px;
+}
+
 .form-control {
   border-radius: 8px;
   padding: 12px;
   font-size: 15px;
   border: 1px solid #ccc;
+  background-color: #fefcf6;
   transition: border-color 0.2s ease;
 }
 
 .form-control:focus {
-  border-color: #4ecdc4;
+  border-color: #2a7f87;
   box-shadow: 0 0 0 0.15rem rgba(78, 205, 196, 0.25);
 }
 
-/* Avatares */
 .avatar-thumb {
   width: 55px;
   height: 55px;
@@ -174,6 +193,7 @@ export default {
   cursor: pointer;
   border: 3px solid transparent;
   transition: transform 0.2s, border-color 0.3s ease;
+  position: relative;
 }
 
 .avatar-thumb:hover {
@@ -185,7 +205,18 @@ export default {
   box-shadow: 0 0 0 3px #fff3bd;
 }
 
-/* Botões */
+.avatar-thumb.selected::after {
+  content: "✔";
+  position: absolute;
+  bottom: -6px;
+  right: -6px;
+  background-color: #ffe66d;
+  color: #2e2e2e;
+  font-size: 12px;
+  border-radius: 50%;
+  padding: 2px 4px;
+}
+
 .btn-warning {
   background-color: #ffe66d;
   border: none;
@@ -211,7 +242,6 @@ export default {
   color: #2c2c2c;
 }
 
-/* Responsivo */
 @media screen and (max-width: 768px) {
   .register-form {
     padding: 30px 20px;

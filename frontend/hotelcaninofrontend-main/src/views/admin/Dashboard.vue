@@ -65,9 +65,9 @@ export default {
 </script>
 
 <style scoped>
-.admin-dashboard { background-color: #fefae0; color: #2e2e2e; }
+.admin-dashboard { background-color: #f9f7ef; color: #2e2e2e; }
 .painel-admin { background: #fff; border-radius: 12px; }
-.page-title { color: #4ecdc4; font-weight: 700; font-size: 2.4rem; }
+.page-title { color: #2a7f87; font-weight: 700; font-size: 2.4rem; }
 
 /* Estatísticas */
 .stat-card { background: #e8f7f5; border: 1px solid #d1efeb; }

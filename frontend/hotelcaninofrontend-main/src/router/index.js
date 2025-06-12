@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 // Área pública
 import LandingPage from '@/views/LandingPage.vue';
+import LoginPage from '@/views/LoginPage.vue';
 import Register from '@/views/Register.vue';
 import ResetPassword from '@/views/ResetPassword.vue';
 import Contactos from '@/views/Contactos.vue';
@@ -30,6 +31,7 @@ import GestaoConteudos from '@/views/admin/GestaoConteudos.vue';
 const routes = [
   // Público
   { path: '/', name: 'LandingPage', component: LandingPage },
+  { path: '/login', name: 'LoginPage', component: LoginPage },
   { path: '/register', name: 'Register', component: Register },
   { path: '/recuperar', name: 'RecuperarPassword', component: ResetPassword },
   { path: '/redefinir/:token', name: 'RedefinirPassword', component: ResetPassword },

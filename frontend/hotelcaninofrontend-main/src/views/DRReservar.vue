@@ -26,6 +26,8 @@
 
     <!-- Formulário -->
     <form @submit.prevent="submeterReserva" class="row g-4">
+      <h5 class="section-label">🐾 Informações da Reserva</h5>
+
       <div class="col-md-6">
         <label class="form-label">Selecionar Cão</label>
         <select v-model="form.id_cao" class="form-select" required>
@@ -154,7 +156,6 @@ export default {
         return;
       }
 
-      // Verificar conflitos
       const atual = new Date(data_inicio);
       const fim = new Date(data_fim);
       const conflitos = [];
@@ -194,45 +195,74 @@ export default {
   min-height: 80vh;
   padding: 20px;
   margin: 20px auto;
-  background-color: #fefae0;
+  background-color: #f9f7ef;
   color: #2e2e2e;
 }
 
 .page-title {
-  color: #4ecdc4;
+  color: #2a7f87;
   font-weight: 700;
   font-size: 2.2rem;
 }
 
+.section-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2a7f87;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
 .mes-titulo {
   font-weight: 600;
-  color: #ff914d;
+  color: #fa7a2f;
 }
 
 .calendario-bloco {
-  background-color: #fff;
-  border: 1px solid #ccc;
+  background-color: #fffdf3;
+  border-left: 4px solid #ff914d;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
 }
 
 .dia-calendario {
-  width: 32px;
-  height: 32px;
-  line-height: 32px;
+  width: 34px;
+  height: 34px;
+  line-height: 34px;
   text-align: center;
-  border-radius: 4px;
+  border-radius: 6px;
   font-size: 0.9rem;
   font-weight: 500;
-}
-
-.ocupado {
-  background-color: #ffd4d4;
-  color: #a10000;
-  border: 1px solid #a10000;
+  transition: all 0.2s ease;
 }
 
 .livre {
-  background-color: #d4edda;
-  border: 1px solid #28a745;
+  background-color: #e6f8ec;
+  color: #2e7d32;
+  border: 1px solid #a5d6a7;
+}
+
+.ocupado {
+  background-color: #fddede;
+  color: #b71c1c;
+  border: 1px solid #f44336;
+}
+
+.form-control,
+.form-select,
+textarea {
+  background-color: #fefcf6;
+  border-radius: 8px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+}
+
+.form-control:focus,
+.form-select:focus,
+textarea:focus {
+  border-color: #2a7f87;
+  box-shadow: 0 0 0 0.15rem rgba(78, 205, 196, 0.25);
 }
 
 .btn-reserva {
@@ -241,9 +271,10 @@ export default {
   border: none;
   padding: 10px 30px;
   font-weight: bold;
-  border-radius: 6px;
-  transition: background-color 0.2s ease;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
 }
+
 .btn-reserva:hover {
   background-color: #fa7a2f;
 }

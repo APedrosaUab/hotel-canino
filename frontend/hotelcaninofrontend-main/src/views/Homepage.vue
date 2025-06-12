@@ -100,12 +100,12 @@ export default {
   min-height: 80vh;
   padding: 20px;
   margin: 20px auto;
-  background-color: #fefae0;
+  background-color: #f9f7ef;
   color: #2e2e2e;
 }
 
 .page-title {
-  color: #4ecdc4;
+  color: #2a7f87;
   font-weight: 700;
   font-size: 2.6rem;
 }
@@ -139,8 +139,8 @@ export default {
   padding: 0.25em 0.5em;
 }
 
-.badge-primary { background-color: #4ecdc4; color: #fff; }
-.badge-success { background-color: #2ecc71; color: #fff; }
+.badge-primary { background-color: #2a7f87; color: #fff; }
+.badge-success { background-color: #2a7f87; color: #fff; }
 .badge-warning { background-color: #f1c40f; color: #fff; }
 .badge-secondary { background-color: #95a5a6; color: #fff; }
 

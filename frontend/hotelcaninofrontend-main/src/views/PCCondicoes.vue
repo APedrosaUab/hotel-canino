@@ -71,48 +71,62 @@ export default {
   min-height: 80vh;
   padding: 20px;
   margin: 20px auto;
-  background-color: #fefae0;
+  background-color: #f9f7ef;
   color: #2e2e2e;
 }
 
 .page-title {
-  color: #4ecdc4;
+  color: #2a7f87;
   font-weight: 700;
   font-size: 2.4rem;
 }
 
 .condicoes-bloco {
   margin-bottom: 2.5rem;
-  padding: 15px 20px;
-  border-left: 6px solid #4ecdc4;
-  background-color: #fffdf3;
-  border-radius: 6px;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+  padding: 25px;
+  border-left: 6px solid #d4a373;
+  background-color: #fdf8ec;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.condicoes-bloco:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
 }
 
 .condicoes-bloco h4 {
   margin-bottom: 0.75rem;
-  color: #555;
-  font-size: 1.25rem;
-  font-weight: 600;
+  color: #2e2e2e;
+  font-size: 1.3rem;
+  font-weight: 700;
 }
 
 .condicoes-bloco p,
 .condicoes-bloco ul {
   font-size: 1rem;
-  line-height: 1.6;
+  line-height: 1.7;
+  margin-bottom: 0;
 }
 
 .condicoes-bloco ul {
-  padding-left: 1.2rem;
+  padding-left: 1.4rem;
   list-style-type: disc;
+  color: #444;
+}
+
+/* Garantir que listas vazias não causam os “três pontos” */
+.condicoes-bloco ul:empty {
+  display: none;
 }
 
 .link-contacto {
-  color: #4ecdc4;
+  color: #2a7f87;
   font-weight: 600;
   text-decoration: underline;
 }
+
 .link-contacto:hover {
   text-decoration: none;
 }
@@ -121,8 +135,9 @@ export default {
   .page-title {
     font-size: 2rem;
   }
+
   .condicoes-bloco {
-    padding: 15px;
+    padding: 20px;
   }
 }
 </style>

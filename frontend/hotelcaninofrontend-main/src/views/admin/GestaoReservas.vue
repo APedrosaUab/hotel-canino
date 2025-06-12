@@ -189,7 +189,7 @@ export default {
 <style scoped>
 .gestao-reservas {
   min-height: 100vh;
-  background-color: #fefae0;
+  background-color: #f9f7ef;
   color: #2e2e2e;
 }
 
@@ -199,18 +199,18 @@ export default {
 }
 
 .page-title {
-  color: #4ecdc4;
+  color: #2a7f87;
   font-weight: 700;
   font-size: 2.2rem;
 }
 
 /* Paginação */
 .pagination .page-item .page-link {
-  color: #4ecdc4;
+  color: #2a7f87;
 }
 .pagination .page-item.active .page-link {
-  background-color: #4ecdc4;
-  border-color: #4ecdc4;
+  background-color: #2a7f87;
+  border-color: #2a7f87;
   color: #fff!important;
 }
 .pagination .page-item.disabled .page-link {

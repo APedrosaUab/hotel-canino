@@ -125,7 +125,7 @@ export default {
 
 /* Título */
 .reset-form h2 {
-  color: #4ecdc4;
+  color: #2a7f87;
   font-weight: 600;
 }
 
@@ -139,7 +139,7 @@ export default {
 }
 
 .form-control:focus {
-  border-color: #4ecdc4;
+  border-color: #2a7f87;
   box-shadow: 0 0 0 0.15rem rgba(78, 205, 196, 0.25);
 }
 

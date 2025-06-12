@@ -1,6 +1,6 @@
 <template>
   <div class="calendario-page container">
-    <h1 class="page-title text-center mb-4">Calendário de Disponibilidade</h1>
+    <h1 class="page-title text-center mb-5">Calendário de Disponibilidade</h1>
 
     <div class="d-flex justify-content-between align-items-center mb-4">
       <button class="btn-calendario" @click="mudarMes(-1)">← Mês anterior</button>
@@ -10,20 +10,20 @@
 
     <div v-if="erro" class="alert alert-danger text-center">{{ erro }}</div>
 
-    <div class="calendar-grid mb-4">
+    <div class="calendar-grid mb-5 p-4 rounded bg-light shadow">
       <div
         v-for="(dia, index) in diasDoMes"
         :key="index"
-        class="day"
-        :class="{ ocupado: isOcupado(dia) }"
+        class="day border"
+        :class="{ ocupado: isOcupado(dia), livre: !isOcupado(dia) }"
       >
         {{ dia.getDate() }}
       </div>
     </div>
 
-    <div class="legenda">
-      <span class="box ocupado"></span> Ocupado
-      <span class="box livre ms-3"></span> Disponível
+    <div class="legenda text-center">
+      <span class="box ocupado me-2"></span> Ocupado
+      <span class="box livre ms-4"></span> Disponível
     </div>
   </div>
 </template>
@@ -99,91 +99,102 @@ export default {
 .calendario-page {
   min-height: 80vh;
   padding: 20px;
-  margin: 20px auto;
-  background-color: #fefae0;
+  background-color: #f9f7ef;
   color: #2e2e2e;
 }
 
-/* Título */
 .page-title {
-  color: #4ecdc4;
+  color: #2a7f87;
   font-weight: 700;
-  font-size: 2.2rem;
+  font-size: 2.4rem;
 }
 
-/* Botões de navegação */
 .btn-calendario {
-  background-color: #ff914d;
-  border: none;
+  background-color: #2a7f87;
   color: white;
-  padding: 6px 14px;
-  font-weight: 600;
+  border: none;
+  padding: 8px 20px;
   border-radius: 6px;
+  font-weight: 600;
   transition: background-color 0.2s ease;
 }
 .btn-calendario:hover {
-  background-color: #fa7a2f;
+  background-color: #246b76;
 }
 
-/* Nome do mês */
 .mes-atual {
-  color: #333;
+  font-size: 1.4rem;
   font-weight: 600;
+  color: #444;
 }
 
-/* Grid do calendário */
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 10px;
-  max-width: 500px;
-  margin: 0 auto;
-}
-.day {
-  height: 60px;
-  text-align: center;
-  line-height: 60px;
-  border-radius: 8px;
-  font-weight: bold;
-  background-color: #d5f8d5;
-  border: 2px solid #47b847;
-  color: #2e2e2e;
-}
-.day.ocupado {
-  background-color: #ffd4d4;
-  border-color: #c0392b;
-  color: #a10000;
+  gap: 12px;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
 }
 
-/* Legenda */
-.legenda {
-  text-align: center;
-  font-weight: 500;
+.day {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: transform 0.2s;
 }
+
+.day:hover {
+  transform: scale(1.05);
+  cursor: default;
+}
+
+.day.livre {
+  background-color: #e3f7e3;
+  border: 1px solid #85c88a;
+  color: #2e7d32;
+}
+
+.day.ocupado {
+  background-color: #fbe0e0;
+  border: 1px solid #e57373;
+  color: #c62828;
+}
+
+.legenda {
+  font-weight: 500;
+  margin-top: 10px;
+}
+
 .box {
   display: inline-block;
   width: 20px;
   height: 20px;
   border-radius: 4px;
-}
-.box.ocupado {
-  background-color: #ffd4d4;
-  border: 1px solid #a10000;
-}
-.box.livre {
-  background-color: #d5f8d5;
-  border: 1px solid #47b847;
+  margin-right: 5px;
+  vertical-align: middle;
 }
 
-/* Responsivo */
+.box.ocupado {
+  background-color: #fbe0e0;
+  border: 1px solid #e57373;
+}
+
+.box.livre {
+  background-color: #e3f7e3;
+  border: 1px solid #85c88a;
+}
+
 @media (max-width: 768px) {
   .day {
     height: 45px;
-    line-height: 45px;
     font-size: 0.9rem;
   }
   .page-title {
-    font-size: 1.8rem;
+    font-size: 2rem;
   }
 }
 </style>

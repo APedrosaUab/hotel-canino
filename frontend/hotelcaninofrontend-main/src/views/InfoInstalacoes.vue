@@ -5,7 +5,7 @@
     <!-- Bloco 1 -->
     <div class="row align-items-center mb-5">
       <div class="col-md-6">
-        <img src="@/assets/images/instalacoes/hotel1.png" alt="Box individual" class="img-fluid rounded shadow" />
+        <img src="@/assets/images/instalacoes/hotel1.png" alt="Box individual" class="img-fluid rounded shadow-sm" />
       </div>
       <div class="col-md-6">
         <h4 class="section-subtitle">Boxes Individuais Confortáveis</h4>
@@ -18,7 +18,7 @@
     <!-- Bloco 2 -->
     <div class="row align-items-center mb-5 flex-md-row-reverse">
       <div class="col-md-6">
-        <img src="@/assets/images/instalacoes/hotel2.png" alt="Área exterior" class="img-fluid rounded shadow" />
+        <img src="@/assets/images/instalacoes/hotel2.png" alt="Área exterior" class="img-fluid rounded shadow-sm" />
       </div>
       <div class="col-md-6">
         <h4 class="section-subtitle">Áreas Exteriores com Atividades</h4>
@@ -31,7 +31,7 @@
     <!-- Bloco 3 -->
     <div class="row align-items-center mb-5">
       <div class="col-md-6">
-        <img src="@/assets/images/instalacoes/hotel3.png" alt="Espaço de convívio" class="img-fluid rounded shadow" />
+        <img src="@/assets/images/instalacoes/hotel3.png" alt="Espaço de convívio" class="img-fluid rounded shadow-sm" />
       </div>
       <div class="col-md-6">
         <h4 class="section-subtitle">Espaço de Convívio Supervisionado</h4>
@@ -51,25 +51,25 @@ export default {
 
 <style scoped>
 .info-instalacoes {
-    min-height: 80vh;
-    padding: 20px;
-    margin: 20px auto;
-    background-color: #fefae0;
-    color: #2e2e2e;
+  min-height: 80vh;
+  padding: 20px;
+  margin: 20px auto;
+  background-color: #f9f7ef;
+  color: #2e2e2e;
 }
 
 .page-title {
-  color: #4ecdc4;
+  color: #2a7f87;
   font-weight: 700;
   font-size: 2.6rem;
 }
 
 .section-subtitle {
-  color: #333333;
-  font-weight: 600;
+  color: #2a7f87;
+  font-weight: 700;
   font-size: 1.4rem;
   margin-bottom: 12px;
-  border-left: 5px solid #ffe66d;
+  border-left: 5px solid #d49c68;
   padding-left: 12px;
 }
 
@@ -83,8 +83,13 @@ p {
   width: 100%;
   max-height: 320px;
   object-fit: cover;
-  border: 1px solid #ddd;
+  border: 1px solid #e0ded9;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
+}
+
+.img-fluid:hover {
+  transform: scale(1.02);
 }
 
 @media (max-width: 767px) {

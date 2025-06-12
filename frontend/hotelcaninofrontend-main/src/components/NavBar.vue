@@ -64,7 +64,7 @@
           <li><a class="dropdown-item text-danger" @click="logout">Sair</a></li>
         </ul>
       </div>
-      <router-link v-else class="btn btn-outline-light btn-sm ms-2" to="/">Entrar</router-link>
+      <router-link v-else class="btn btn-outline-light btn-sm ms-2" to="/login">Entrar</router-link>
     </div>
 
     <!-- MOBILE: OFFCANVAS -->
@@ -140,7 +140,8 @@ export default {
 
 /* NAVBAR GERAL */
 .navbar {
-  background-color: #4ecdc4 !important; /* Verde-menta elegante */
+ /* background-color: ##557c73 !important; /* verde elegante */
+ background-color:  #2a7f87 !important;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s ease;
 }
@@ -161,7 +162,7 @@ export default {
 
 /* DROPDOWN MENU */
 .dropdown-menu {
-  background-color: #fefae0; /* Areia suave */
+  background-color: #f9f7ef; /* Areia suave */
   border-radius: 8px;
   border: none;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
@@ -196,19 +197,20 @@ export default {
   filter: brightness(1.1);
 }
 
+ 
 /* OFFCANVAS MENU (MOBILE) */
 .offcanvas {
-  background-color: #fefae0;
+  background-color: #f9f7ef;
   color: #3a3a3a;
 }
 
 .offcanvas .nav-link {
-  color: #3a3a3a !important;
+  color: #e5d9c6 !important;
 }
 
 .text-warning {
   color: #f4a261 !important;
-}
+} 
 
 /* TEXTO OFFCANVAS */
 ul.nav.flex-column {

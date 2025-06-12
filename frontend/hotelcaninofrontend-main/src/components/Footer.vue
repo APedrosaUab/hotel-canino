@@ -6,7 +6,7 @@
           <p class="mb-0">© 2025 Hotel Canino. Todos os direitos reservados.</p>
         </div>
         <div class="col-12 col-md-6 text-md-end right-footer">
-          <p class="mb-0">Plataformas de Conteúdos Web - Grupo VII</p>
+          <p class="mb-0">Plataformas de Conteúdos Web - Grupo VII (Claudia & André)</p>
         </div>
       </div>
     </div>
@@ -21,10 +21,10 @@ export default {
 
 <style scoped>
 .footer-hotel {
-  background-color: #fefae0; /* tom areia suave */
+  background-color: #f9f7ef; /* tom areia suave */
   color: #3a3a3a; /* castanho escuro para contraste */
   font-size: 14px;
-  border-top: 3px solid #4ecdc4; /* verde-menta */
+  border-top: 3px solid #2a7f87; /* verde */
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
   transition: background-color 0.3s ease;
 }
