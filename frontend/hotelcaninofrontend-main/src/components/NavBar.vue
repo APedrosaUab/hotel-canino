@@ -99,6 +99,10 @@
           <li v-if="isAuthenticated" class="mt-1">
             <a class="nav-link text-danger" @click="logout">Sair</a>
           </li>
+
+          <li v-if="!isAuthenticated" class="mt-3">
+            <router-link class="btn btn-outline-dark w-100 text-center" to="/login">Entrar</router-link>
+          </li>
         </ul>
       </div>
     </div>
