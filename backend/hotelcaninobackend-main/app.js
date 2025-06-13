@@ -423,8 +423,8 @@ app.get("/calendario/ocupacoes", async (req, res) => {
   const anoInt = parseInt(ano);
   const mesInt = parseInt(mes) - 1;
 
-  const inicio = new Date(anoInt, mesInt, 1);
-  const fim = new Date(anoInt, mesInt + 1, 0, 23, 59, 59);
+  const inicio = new Date(Date.UTC(anoInt, mesInt, 1));
+  const fim = new Date(Date.UTC(anoInt, mesInt + 1, 0, 23, 59, 59));
 
   try {
     const reservas = await Reserva.find({
@@ -435,10 +435,10 @@ app.get("/calendario/ocupacoes", async (req, res) => {
     const diasOcupados = new Set();
 
     reservas.forEach(reserva => {
-      
-      let atual = new Date(reserva.data_inicio);
-      let ultima = new Date(reserva.data_fim);
+      const atual = new Date(reserva.data_inicio);
+      const ultima = new Date(reserva.data_fim);
 
+      // Normalizar para UTC 00:00:00
       atual.setUTCHours(0, 0, 0, 0);
       ultima.setUTCHours(0, 0, 0, 0);
 
@@ -451,9 +451,11 @@ app.get("/calendario/ocupacoes", async (req, res) => {
 
     res.json([...diasOcupados]);
   } catch (error) {
+    console.error("Erro ao obter dias ocupados:", error);
     res.status(500).json({ message: "Erro ao obter dias ocupados." });
   }
 });
+
 
 // === Dashboard ===
 app.get('/admin/stats', async (req, res) => {
