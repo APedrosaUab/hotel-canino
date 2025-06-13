@@ -435,13 +435,17 @@ app.get("/calendario/ocupacoes", async (req, res) => {
     const diasOcupados = new Set();
 
     reservas.forEach(reserva => {
-      const atual = new Date(reserva.data_inicio);
-      const ultima = new Date(reserva.data_fim);
+      
+      let atual = new Date(reserva.data_inicio);
+      let ultima = new Date(reserva.data_fim);
+
+      atual.setUTCHours(0, 0, 0, 0);
+      ultima.setUTCHours(0, 0, 0, 0);
 
       while (atual <= ultima) {
         const dataStr = atual.toISOString().split('T')[0];
         diasOcupados.add(dataStr);
-        atual.setDate(atual.getDate() + 1);
+        atual.setUTCDate(atual.getUTCDate() + 1);
       }
     });
 

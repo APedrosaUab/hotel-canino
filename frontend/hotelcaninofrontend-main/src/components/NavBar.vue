@@ -78,7 +78,6 @@
           <li v-if="isAuthenticated" class="text-warning fw-bold mt-1">Área Pessoal</li>
           <li v-if="isAuthenticated"><router-link class="nav-link text-white ms-3" to="/perfil">Perfil</router-link></li>
           <li v-if="isAuthenticated"><router-link class="nav-link text-white ms-3" to="/minhas-reservas">Minhas Reservas</router-link></li>
-          <li v-if="isAuthenticated"><router-link class="nav-link text-white ms-3" to="/reservar">Reservar</router-link></li>
 
           <li v-if="isAdmin" class="text-warning fw-bold mt-1">Área Admin</li>
           <li v-if="isAdmin"><router-link class="nav-link text-white ms-3" to="/admin">Dashboard</router-link></li>
@@ -97,6 +96,7 @@
 
           <li class="nav-item text-warning fw-bold mt-1">Reservas</li>
           <li><router-link class="nav-link text-white ms-3" to="/calendario">Calendário</router-link></li>
+          <li v-if="isAuthenticated"><router-link class="nav-link text-white ms-3" to="/reservar">Reservar</router-link></li>
 
           <li class="nav-item text-warning fw-bold mt-1">Contactos</li>
           <li><router-link class="nav-link text-white ms-3" to="/contactos">Contactos</router-link></li>
@@ -109,7 +109,6 @@
             <router-link class="btn btn-outline-dark w-100 text-center" to="/login">Entrar</router-link>
           </li>
         </ul>
-
       </div>
     </div>
   </nav>
