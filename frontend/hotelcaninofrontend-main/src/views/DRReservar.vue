@@ -6,21 +6,33 @@
       Consulte a disponibilidade nos próximos meses antes de submeter o pedido.
     </p>
 
-    <!-- Mini calendário -->
-    <div class="row mb-4">
-      <div v-for="mes in 3" :key="mes" class="col-md-4 mb-3">
-        <div class="calendario-bloco p-3 rounded shadow-sm">
-          <h5 class="text-center mb-3 mes-titulo">{{ nomeDoMes(mesAtual + mes - 1) }} {{ anoDeMes(mesAtual + mes - 1) }}</h5>
-          <div class="d-flex flex-wrap justify-content-center gap-1">
-            <div
-              v-for="dia in diasDoMes(mesAtual + mes - 1)"
-              :key="dia"
-              :class="['dia-calendario', isOcupado(dia) ? 'ocupado' : 'livre']"
-            >
-              {{ dia.getDate() }}
+    <!-- Mini calendário com navegação -->
+    <div class="row mb-4 align-items-center justify-content-between">
+      <div class="col-auto">
+        <button @click="mesAtual--" class="btn btn-outline-secondary">⟵</button>
+      </div>
+      <div class="col">
+        <div class="row">
+          <div v-for="mes in 3" :key="mes" class="col-md-4 mb-3">
+            <div class="calendario-bloco p-3 rounded shadow-sm">
+              <h5 class="text-center mb-3 mes-titulo">
+                {{ nomeDoMes(mesAtual + mes - 1) }} {{ anoDeMes(mesAtual + mes - 1) }}
+              </h5>
+              <div class="d-flex flex-wrap justify-content-center gap-1">
+                <div
+                  v-for="dia in diasDoMes(mesAtual + mes - 1)"
+                  :key="dia"
+                  :class="['dia-calendario', isOcupado(dia) ? 'ocupado' : 'livre']"
+                >
+                  {{ dia.getDate() }}
+                </div>
+              </div>
             </div>
           </div>
         </div>
+      </div>
+      <div class="col-auto">
+        <button @click="mesAtual++" class="btn btn-outline-secondary">⟶</button>
       </div>
     </div>
 
@@ -96,7 +108,7 @@ export default {
       const resCaes = await axios.get(`${process.env.VUE_APP_BACKEND_URL}/caes/${id}`);
       this.caes = resCaes.data;
 
-      for (let i = 0; i < 3; i++) {
+      for (let i = 0; i < 6; i++) {
         const ano = this.anoDeMes(this.mesAtual + i);
         const mes = this.mesReal(this.mesAtual + i);
         await this.carregarOcupados(ano, mes);
@@ -140,7 +152,6 @@ export default {
       const iso = new Date(Date.UTC(data.getFullYear(), data.getMonth(), data.getDate()))
         .toISOString()
         .split('T')[0];
-
       return this.diasOcupados.includes(iso);
     },
     async submeterReserva() {
@@ -154,13 +165,22 @@ export default {
         return;
       }
 
-      if (new Date(data_inicio) > new Date(data_fim)) {
+      const inicio = new Date(data_inicio);
+      const fim = new Date(data_fim);
+      const diffMs = Math.abs(fim - inicio);
+      const diffDias = Math.ceil(diffMs / (1000 * 60 * 60 * 24)) + 1;
+
+      if (diffDias > 15) {
+        this.erro = "Reservas não podem exceder 15 dias consecutivos.";
+        return;
+      }
+
+      if (inicio > fim) {
         this.erro = "A data de fim deve ser posterior à de início.";
         return;
       }
 
-      const atual = new Date(data_inicio);
-      const fim = new Date(data_fim);
+      const atual = new Date(inicio);
       const conflitos = [];
 
       while (atual <= fim) {
@@ -192,6 +212,7 @@ export default {
   }
 };
 </script>
+
 
 <style scoped>
 .reservar {
