@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHashHistory } from 'vue-router';
 
 // Área pública
 import LandingPage from '@/views/LandingPage.vue';
@@ -60,7 +60,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(), // Mudança aqui: createWebHistory() -> createWebHashHistory()
   routes
 });
 
