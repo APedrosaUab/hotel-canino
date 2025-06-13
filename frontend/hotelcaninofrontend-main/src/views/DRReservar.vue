@@ -137,8 +137,12 @@ export default {
       return this.anoAtual + Math.floor(index / 12);
     },
     isOcupado(data) {
-      return this.diasOcupados.includes(data.toISOString().split('T')[0]);
-    },
+      const iso = new Date(Date.UTC(data.getFullYear(), data.getMonth(), data.getDate()))
+        .toISOString()
+        .split('T')[0];
+
+      return this.diasOcupados.includes(iso);
+    }
     async submeterReserva() {
       this.mensagem = '';
       this.erro = '';
