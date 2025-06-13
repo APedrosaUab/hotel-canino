@@ -111,7 +111,7 @@ export default {
         const res = await axios.get(`${process.env.VUE_APP_BACKEND_URL}/calendario/ocupacoes`, {
           params: { ano, mes }
         });
-        this.diasOcupados.push(...res.data);
+        this.diasOcupados = [...new Set([...this.diasOcupados, ...res.data])];
       } catch {
         console.error("Erro ao carregar dias ocupados");
       }
