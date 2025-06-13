@@ -142,11 +142,10 @@ export default {
         .split('T')[0];
 
       return this.diasOcupados.includes(iso);
-    }
+    },
     async submeterReserva() {
       this.mensagem = '';
       this.erro = '';
-
       const id_utilizador = localStorage.getItem('id_utilizador');
       const { id_cao, data_inicio, data_fim, observacoes } = this.form;
 
