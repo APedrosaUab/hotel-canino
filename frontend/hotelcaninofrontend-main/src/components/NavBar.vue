@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3 d-flex align-items-center justify-content-between">
     <!-- MOBILE: Botão Hamburguer -->
     <button
-      class="navbar-toggler me-2 d-lg-none"
+      class="navbar-toggler me-5 d-lg-none"
       type="button"
       data-bs-toggle="offcanvas"
       data-bs-target="#offcanvasMenu"
@@ -248,5 +248,10 @@ ul.nav.flex-column {
   transition: all 0.3s ease;
 }
 
-/* ÍCONES (opcional: podes usar emojis ou SVGs no HTML) */
+@media screen and (max-width: 767px) {
+.logo-img {
+  margin-left: 3rem !important;
+}
+}
+
 </style>
