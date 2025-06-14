@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3 d-flex align-items-center justify-content-between">
     <!-- MOBILE: Botão Hamburguer -->
     <button
       class="navbar-toggler me-2 d-lg-none"
@@ -14,6 +14,15 @@
     <!-- LOGO -->
     <router-link to="/" class="navbar-brand mx-auto mx-lg-0">
       <img src="@/assets/logo.png" alt="Hotel Canino" class="logo-img" />
+    </router-link>
+
+    <!-- BOTÃO ENTRAR (Mobile - visível) -->
+    <router-link
+      v-if="!isAuthenticated"
+      class="btn btn-outline-light btn-sm d-lg-none ms-auto"
+      to="/login"
+    >
+      Entrar
     </router-link>
 
     <!-- DESKTOP MENU -->
