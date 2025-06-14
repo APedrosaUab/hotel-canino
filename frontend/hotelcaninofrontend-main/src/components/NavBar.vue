@@ -248,10 +248,22 @@ ul.nav.flex-column {
   transition: all 0.3s ease;
 }
 
-@media screen and (max-width: 767px) {
-.logo-img {
-  margin-left: 3rem !important;
-}
+@media screen and (max-width: 991.98px) {
+  .navbar {
+    position: relative;
+  }
+
+  .logo-img {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .navbar-brand {
+    margin: 0 !important;
+  }
 }
 
 </style>
