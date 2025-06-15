@@ -85,6 +85,7 @@ async function seedDatabase() {
 
     // Criar cães e reservas para todos os utilizadores com role 'user'
     const usuariosNormais = utilizadores.filter(u => u.role === 'user');
+
     const meses = [
       { nome: 'Janeiro', numero: 1 },
       { nome: 'Fevereiro', numero: 2 },
@@ -94,7 +95,10 @@ async function seedDatabase() {
       { nome: 'Junho', numero: 6 },
       { nome: 'Julho', numero: 7 },
       { nome: 'Agosto', numero: 8 },
-      { nome: 'Setembro', numero: 9 }
+      { nome: 'Setembro', numero: 9 },
+      { nome: 'Outubro', numero: 10 },
+      { nome: 'Novembro', numero: 11 },
+      { nome: 'Dezembro', numero: 12 }
     ];
 
     // Nomes bonitos de cães
@@ -110,7 +114,9 @@ async function seedDatabase() {
 
     for (const u of usuariosNormais) {
       const caes = [];
-      for (let i = 1; i <= 3; i++) {
+      const numCaes = Math.floor(Math.random() * 2) + 1; // 1 ou 2 cães por utilizador
+
+      for (let i = 1; i <= numCaes; i++) {
         const cao = await Cao.create({
           nome: nomesCaes[nomeIndex % nomesCaes.length],
           raca: ['Labrador','Beagle','Pastor Alemão','Caniche','Bulldog'][i % 5],
@@ -121,27 +127,42 @@ async function seedDatabase() {
         nomeIndex++;
       }
 
-      // Criar reservas para todos os meses (Janeiro a Setembro)
       for (const cao of caes) {
         for (const mes of meses) {
-          // Criar 1-2 reservas por mês para cada cão (aleatório)
-          const numReservas = Math.floor(Math.random() * 2) + 1; // 1 ou 2 reservas
-          
-          for (let j = 0; j < numReservas; j++) {
-            // Gerar datas aleatórias dentro do mês
-            const diasNoMes = new Date(2025, mes.numero, 0).getDate();
-            const diaInicio = Math.floor(Math.random() * (diasNoMes - 7)) + 1; // Garante pelo menos 7 dias de margem
-            const duracaoEstadia = Math.floor(Math.random() * 7) + 3; // Entre 3 a 9 dias
-            const diaFim = Math.min(diaInicio + duracaoEstadia, diasNoMes);
-            
-            await Reserva.create({
-              id_utilizador: u._id,
-              id_cao: cao._id,
-              data_inicio: new Date(2025, mes.numero - 1, diaInicio),
-              data_fim: new Date(2025, mes.numero - 1, diaFim),
-              observacoes: `Reserva de ${cao.nome} (${u.username}) - ${mes.nome} 2025, sessão ${j + 1}`
-            });
+          const mesAtual = mes.numero;
+
+          let chanceReserva;
+          let duracaoMin = 3;
+          let duracaoMax = 9;
+
+          // Mais reservas de Janeiro a Maio
+          if (mesAtual >= 1 && mesAtual <= 5) {
+            chanceReserva = 0.6; // 60% de chance
+            duracaoMin = 3;
+            duracaoMax = 7;
           }
+          // Menos reservas de Junho a Dezembro
+          else {
+            chanceReserva = 0.2; // 20% de chance
+            duracaoMin = 2;
+            duracaoMax = 3;
+          }
+
+          const criarReserva = Math.random() < chanceReserva;
+          if (!criarReserva) continue;
+
+          const diasNoMes = new Date(2025, mes.numero, 0).getDate();
+          const diaInicio = Math.floor(Math.random() * (diasNoMes - duracaoMax)) + 1;
+          const duracaoEstadia = Math.floor(Math.random() * (duracaoMax - duracaoMin + 1)) + duracaoMin;
+          const diaFim = Math.min(diaInicio + duracaoEstadia, diasNoMes);
+
+          await Reserva.create({
+            id_utilizador: u._id,
+            id_cao: cao._id,
+            data_inicio: new Date(2025, mes.numero - 1, diaInicio),
+            data_fim: new Date(2025, mes.numero - 1, diaFim),
+            observacoes: `Reserva de ${cao.nome} (${u.username}) - ${mes.nome} 2025`
+          });
         }
       }
     }
@@ -210,7 +231,7 @@ async function seedDatabase() {
     console.log('📊 Estatísticas:');
     console.log(`- ${utilizadores.length} utilizadores criados`);
     console.log(`- ${usuariosNormais.length * 3} cães criados`);
-    console.log(`- Reservas criadas para 9 meses (Janeiro a Setembro)`);
+    console.log(`- Reservas criadas para 12 meses (Janeiro a Dezembro)`);
     console.log(`- ${conteudosApresentacao.length + conteudosEventos.length + conteudosNoticias.length + conteudosPromocoes.length + conteudosOutras.length} conteúdos criados`);
   } catch (error) {
     console.error('❌ Erro ao criar dados iniciais:', error);
