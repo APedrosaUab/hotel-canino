@@ -235,41 +235,51 @@ app.get("/reservas/:id_utilizador", async (req, res) => {
 // Obter todas as reservas
 app.get("/reservas", async (req, res) => {
   try {
-    const reservas = await Reserva.find()
-      .populate("id_utilizador", "nome apelido email")
-      .populate("id_cao", "nome raca");
-    res.json(reservas);
+    const { id_utilizador, page, limit } = req.query;
+    
+    // Se é para um utilizador específico
+    if (id_utilizador) {
+      const reservas = await Reserva.find({ id_utilizador })
+        .populate("id_cao", "nome raca");
+      return res.json(reservas);
+    }
+    
+    // Paginação (opcional)
+    const pageNum = Math.max(1, parseInt(page) || 1);
+    const limitNum = Math.max(1, parseInt(limit) || 50); // Default maior
+    
+    if (page) {
+      // Com paginação
+      const [items, total] = await Promise.all([
+        Reserva.find()
+          .populate('id_cao', 'nome raca')
+          .populate('id_utilizador', 'nome apelido')
+          .sort({ data_inicio: -1 })
+          .skip((pageNum - 1) * limitNum)
+          .limit(limitNum),
+        Reserva.countDocuments()
+      ]);
+      
+      res.json({
+        items,
+        pagination: {
+          page: pageNum,
+          limit: limitNum,
+          total,
+          totalPages: Math.ceil(total / limitNum)
+        }
+      });
+    } else {
+      // Sem paginação - todas as reservas
+      const reservas = await Reserva.find()
+        .populate("id_utilizador", "nome apelido email")
+        .populate("id_cao", "nome raca")
+        .sort({ data_inicio: -1 });
+      res.json(reservas);
+    }
   } catch (error) {
-    console.error("❌ Erro ao obter todas as reservas:", error);
+    console.error("❌ Erro ao obter reservas:", error);
     res.status(500).json({ message: "Erro ao obter reservas." });
-  }
-});
-
-// GET /reservas?page=1&limit=10
-app.get('/reservas', async (req, res) => {
-  const page  = Math.max(1, parseInt(req.query.page)  || 1);
-  const limit = Math.max(1, parseInt(req.query.limit) || 10);
-  try {
-    const [items, total] = await Promise.all([
-      Reserva.find()
-        .populate('id_cao', 'nome raca')
-        .populate('id_utilizador', 'nome apelido')
-        .sort({ data_inicio: -1 })
-        .skip((page - 1) * limit)
-        .limit(limit),
-      Reserva.countDocuments()
-    ]);
-    res.json({
-      items,
-      pagination: {
-        page,
-        limit,
-        total,
-        totalPages: Math.ceil(total / limit)
-      }
-    });
-  } catch (err) {
-    res.status(500).json({ message: 'Erro ao obter reservas.' });
   }
 });
 
@@ -309,39 +319,42 @@ app.delete("/reservas/:id", async (req, res) => {
   }
 });
 
-// === Conteúdos ===
+// === Conteúdos - ROTA ÚNICA COM PAGINAÇÃO OPCIONAL ===
 app.get("/conteudos", async (req, res) => {
   try {
-    const conteudos = await Conteudo.find().sort({ createdAt: 1 });
-    res.json(conteudos);
-  } catch {
+    const { page, limit } = req.query;
+    
+    // Paginação (opcional)
+    const pageNum = Math.max(1, parseInt(page) || 1);
+    const limitNum = Math.max(1, parseInt(limit) || 50); // Default maior
+    
+    if (page) {
+      // Com paginação
+      const [items, total] = await Promise.all([
+        Conteudo.find()
+          .sort({ criadoEm: -1 })
+          .skip((pageNum - 1) * limitNum)
+          .limit(limitNum),
+        Conteudo.countDocuments()
+      ]);
+      
+      res.json({
+        items,
+        pagination: {
+          page: pageNum,
+          limit: limitNum,
+          total,
+          totalPages: Math.ceil(total / limitNum)
+        }
+      });
+    } else {
+      // Sem paginação - todos os conteúdos
+      const conteudos = await Conteudo.find().sort({ createdAt: 1 });
+      res.json(conteudos);
+    }
+  } catch (error) {
+    console.error("❌ Erro ao obter conteúdos:", error);
     res.status(500).json({ message: "Erro ao obter conteúdos." });
-  }
-});
-
-// GET /conteudos?page=1&limit=10
-app.get('/conteudos', async (req, res) => {
-  const page  = Math.max(1, parseInt(req.query.page)  || 1);
-  const limit = Math.max(1, parseInt(req.query.limit) || 10);
-  try {
-    const [items, total] = await Promise.all([
-      Conteudo.find()
-        .sort({ criadoEm: -1 })
-        .skip((page - 1) * limit)
-        .limit(limit),
-      Conteudo.countDocuments()
-    ]);
-    res.json({
-      items,
-      pagination: {
-        page,
-        limit,
-        total,
-        totalPages: Math.ceil(total / limit)
-      }
-    });
-  } catch (err) {
-    res.status(500).json({ message: 'Erro ao obter conteúdos.' });
   }
 });
 

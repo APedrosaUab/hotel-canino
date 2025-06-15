@@ -8,72 +8,19 @@ const Conteudo = require('./models/Conteudo');
 
 async function seedDatabase() {
   try {
-    // Verificar se a conexão está configurada
-    if (!process.env.MONGODB_URI) {
-      throw new Error('MONGODB_URI não encontrada no arquivo .env');
-    }
-
-    console.log('🔄 Conectando ao MongoDB...');
-    console.log('URI:', process.env.MONGODB_URI.replace(/\/\/.*@/, '//***:***@')); // Mascarar credenciais
-    
     await mongoose.connect(process.env.MONGODB_URI);
     console.log('✅ Ligado ao MongoDB');
-    console.log('📍 Base de dados:', mongoose.connection.db.databaseName);
-    console.log('📍 Estado da conexão:', mongoose.connection.readyState);
 
-    // Verificar coleções existentes
-    const collections = await mongoose.connection.db.listCollections().toArray();
-    console.log('📚 Coleções existentes:', collections.map(c => c.name));
-
-    // Testar se consegue criar um documento simples
-    console.log('\n🧪 TESTE SIMPLES - Criar um utilizador...');
-    try {
-      const testUser = await Utilizador.create({
-        nome: 'Teste',
-        apelido: 'Debug',
-        username: 'testdebug',
-        dataNascimento: new Date('1990-01-01'),
-        email: 'test@debug.com',
-        avatarUser: 1,
-        password_hash: await bcrypt.hash('test123', 10),
-        role: 'user'
-      });
-      console.log('✅ Utilizador teste criado:', testUser._id);
-      
-      // Verificar se foi mesmo criado
-      const verificacao = await Utilizador.findById(testUser._id);
-      if (verificacao) {
-        console.log('✅ Utilizador encontrado na BD:', verificacao.username);
-      } else {
-        console.log('❌ Utilizador NÃO encontrado na BD após criação!');
-      }
-      
-      // Contar documentos
-      const count = await Utilizador.countDocuments();
-      console.log('📊 Total de utilizadores na BD:', count);
-      
-    } catch (testError) {
-      console.error('❌ ERRO no teste simples:', testError);
-      console.error('Detalhes do erro:', testError.message);
-      if (testError.errors) {
-        console.error('Erros de validação:', testError.errors);
-      }
-      return; // Parar aqui se o teste falhar
-    }
-
-    console.log('\n🔄 Limpando coleções...');
-    const deleteResults = await Promise.all([
+    // Limpeza de coleções
+    await Promise.all([
       Utilizador.deleteMany({}),
       Cao.deleteMany({}),
       Reserva.deleteMany({}),
       Conteudo.deleteMany({})
     ]);
-    console.log('🗑️ Registos removidos:', deleteResults.map(r => r.deletedCount));
 
-    console.log('\n🔄 Iniciando criação em massa...');
-    
-    // Dados dos utilizadores
-    const dadosUtilizadores = [
+    // Criação de utilizadores
+    const utilizadores = await Utilizador.insertMany([
       { 
         nome: 'Admin', 
         apelido: 'Hotel', 
@@ -103,150 +50,194 @@ async function seedDatabase() {
         avatarUser: 3, 
         password_hash: await bcrypt.hash('teste123', 10), 
         role: 'user' 
+      },
+      { 
+        nome: 'Carlos', 
+        apelido: 'Ferreira', 
+        username: 'carlosf', 
+        dataNascimento: new Date('1987-03-12'), 
+        email: 'carlos@cliente.pt', 
+        avatarUser: 4, 
+        password_hash: await bcrypt.hash('carlos123', 10), 
+        role: 'user' 
+      },
+      { 
+        nome: 'Rita', 
+        apelido: 'Gomes', 
+        username: 'ritag', 
+        dataNascimento: new Date('1992-09-25'), 
+        email: 'rita@cliente.pt', 
+        avatarUser: 5, 
+        password_hash: await bcrypt.hash('rita123', 10), 
+        role: 'user' 
+      },
+      { 
+        nome: 'João', 
+        apelido: 'Pereira', 
+        username: 'joaop', 
+        dataNascimento: new Date('1985-06-18'), 
+        email: 'joao@cliente.pt', 
+        avatarUser: 6, 
+        password_hash: await bcrypt.hash('joao123', 10), 
+        role: 'user' 
       }
-    ];
-
-    // Criar utilizadores individualmente
-    const utilizadores = [];
-    for (let i = 0; i < dadosUtilizadores.length; i++) {
-      const dados = dadosUtilizadores[i];
-      console.log(`\n🔄 Criando utilizador ${i + 1}/${dadosUtilizadores.length}: ${dados.username}`);
-      
-      try {
-        const utilizador = new Utilizador(dados);
-        const savedUser = await utilizador.save();
-        utilizadores.push(savedUser);
-        console.log(`✅ Criado com ID: ${savedUser._id}`);
-        
-        // Verificar imediatamente se foi salvo
-        const verificar = await Utilizador.findById(savedUser._id);
-        if (verificar) {
-          console.log(`✅ Confirmado na BD: ${verificar.username}`);
-        } else {
-          console.log(`❌ NÃO encontrado na BD: ${savedUser._id}`);
-        }
-        
-      } catch (error) {
-        console.error(`❌ Erro ao criar ${dados.username}:`, error.message);
-        if (error.errors) {
-          console.error('Detalhes:', error.errors);
-        }
-      }
-    }
-
-    console.log(`\n📊 Total de utilizadores criados: ${utilizadores.length}`);
-    
-    // Contar na base de dados
-    const totalNaBD = await Utilizador.countDocuments();
-    console.log(`📊 Total na base de dados: ${totalNaBD}`);
-
-    // Se chegou até aqui com utilizadores, criar alguns cães
-    if (utilizadores.length > 0) {
-      console.log('\n🔄 Criando cães...');
-      
-      const usuariosNormais = utilizadores.filter(u => u.role === 'user');
-      console.log(`📊 Utilizadores normais encontrados: ${usuariosNormais.length}`);
-      
-      for (const usuario of usuariosNormais) {
-        console.log(`\n🔄 Criando cães para: ${usuario.username}`);
-        
-        try {
-          const cao = await Cao.create({
-            nome: 'Rex',
-            raca: 'Labrador',
-            idade: 3,
-            id_utilizador: usuario._id
-          });
-          console.log(`✅ Cão criado: ${cao.nome} (ID: ${cao._id})`);
-          
-          // Criar uma reserva
-          const reserva = await Reserva.create({
-            id_utilizador: usuario._id,
-            id_cao: cao._id,
-            data_inicio: new Date('2025-07-01'),
-            data_fim: new Date('2025-07-05'),
-            observacoes: `Reserva teste para ${cao.nome}`
-          });
-          console.log(`✅ Reserva criada: ${reserva._id}`);
-          
-        } catch (error) {
-          console.error(`❌ Erro ao criar cão/reserva para ${usuario.username}:`, error.message);
-        }
-      }
-    }
-
-    // Criar alguns conteúdos
-    console.log('\n🔄 Criando conteúdos...');
-    const conteudosSimples = [
-      { titulo: 'Bem-vindo', tipo: 'apresentacao', corpo: '<p>Teste de conteúdo</p>' },
-      { titulo: 'Evento Teste', tipo: 'Eventos', corpo: '<p>Evento de teste</p>' }
-    ];
-
-    for (const conteudo of conteudosSimples) {
-      try {
-        const saved = await Conteudo.create(conteudo);
-        console.log(`✅ Conteúdo criado: ${saved.titulo} (ID: ${saved._id})`);
-      } catch (error) {
-        console.error(`❌ Erro ao criar conteúdo:`, error.message);
-      }
-    }
-
-    // Verificação final completa
-    console.log('\n🔍 VERIFICAÇÃO FINAL:');
-    const contagens = await Promise.all([
-      Utilizador.countDocuments(),
-      Cao.countDocuments(),
-      Reserva.countDocuments(),
-      Conteudo.countDocuments()
     ]);
 
-    console.log(`📊 Utilizadores: ${contagens[0]}`);
-    console.log(`📊 Cães: ${contagens[1]}`);
-    console.log(`📊 Reservas: ${contagens[2]}`);
-    console.log(`📊 Conteúdos: ${contagens[3]}`);
+    // Criar cães e reservas para todos os utilizadores com role 'user'
+    const usuariosNormais = utilizadores.filter(u => u.role === 'user');
 
-    // Listar alguns documentos para confirmar
-    console.log('\n📋 DOCUMENTOS CRIADOS:');
-    const users = await Utilizador.find({}, 'username email role');
-    users.forEach(user => {
-      console.log(`- User: ${user.username} (${user.email}) - ${user.role}`);
-    });
+    const meses = [
+      { nome: 'Janeiro', numero: 1 },
+      { nome: 'Fevereiro', numero: 2 },
+      { nome: 'Março', numero: 3 },
+      { nome: 'Abril', numero: 4 },
+      { nome: 'Maio', numero: 5 },
+      { nome: 'Junho', numero: 6 },
+      { nome: 'Julho', numero: 7 },
+      { nome: 'Agosto', numero: 8 },
+      { nome: 'Setembro', numero: 9 },
+      { nome: 'Outubro', numero: 10 },
+      { nome: 'Novembro', numero: 11 },
+      { nome: 'Dezembro', numero: 12 }
+    ];
 
-    const caes = await Cao.find({}, 'nome raca');
-    caes.forEach(cao => {
-      console.log(`- Cão: ${cao.nome} (${cao.raca})`);
-    });
+    // Nomes bonitos de cães
+    const nomesCaes = [
+      'Max', 'Luna', 'Charlie', 'Bella', 'Rocky', 'Mia', 'Zeus', 'Nina',
+      'Bruno', 'Sofia', 'Thor', 'Emma', 'Rex', 'Lola', 'Duke', 'Nala',
+      'Leo', 'Zara', 'Toby', 'Maya', 'Oscar', 'Coco', 'Buddy', 'Ruby',
+      'Simba', 'Kira', 'Jack', 'Dora', 'Bear', 'Zoe', 'Cooper', 'Lily',
+      'Rusty', 'Honey', 'Milo', 'Stella', 'Tucker', 'Rosie', 'Benny', 'Pearl'
+    ];
 
-    // Verificar se as coleções foram realmente criadas
-    const collectionsAfter = await mongoose.connection.db.listCollections().toArray();
-    console.log('\n📚 Coleções após seed:', collectionsAfter.map(c => c.name));
+    let nomeIndex = 0;
 
-    console.log('\n✅ Seed concluído!');
+    for (const u of usuariosNormais) {
+      const caes = [];
+      const numCaes = Math.floor(Math.random() * 2) + 1; // 1 ou 2 cães por utilizador
 
+      for (let i = 1; i <= numCaes; i++) {
+        const cao = await Cao.create({
+          nome: nomesCaes[nomeIndex % nomesCaes.length],
+          raca: ['Labrador','Beagle','Pastor Alemão','Caniche','Bulldog'][i % 5],
+          idade: Math.floor(Math.random() * 10) + 1,
+          id_utilizador: u._id
+        });
+        caes.push(cao);
+        nomeIndex++;
+      }
+
+      for (const cao of caes) {
+        for (const mes of meses) {
+          const mesAtual = mes.numero;
+
+          let chanceReserva;
+          let duracaoMin = 3;
+          let duracaoMax = 9;
+
+          // Mais reservas de Janeiro a Maio
+          if (mesAtual >= 1 && mesAtual <= 5) {
+            chanceReserva = 0.6; // 60% de chance
+            duracaoMin = 3;
+            duracaoMax = 7;
+          }
+          // Menos reservas de Junho a Dezembro
+          else {
+            chanceReserva = 0.2; // 20% de chance
+            duracaoMin = 2;
+            duracaoMax = 3;
+          }
+
+          const criarReserva = Math.random() < chanceReserva;
+          if (!criarReserva) continue;
+
+          const diasNoMes = new Date(2025, mes.numero, 0).getDate();
+          const diaInicio = Math.floor(Math.random() * (diasNoMes - duracaoMax)) + 1;
+          const duracaoEstadia = Math.floor(Math.random() * (duracaoMax - duracaoMin + 1)) + duracaoMin;
+          const diaFim = Math.min(diaInicio + duracaoEstadia, diasNoMes);
+
+          await Reserva.create({
+            id_utilizador: u._id,
+            id_cao: cao._id,
+            data_inicio: new Date(2025, mes.numero - 1, diaInicio),
+            data_fim: new Date(2025, mes.numero - 1, diaFim),
+            observacoes: `Reserva de ${cao.nome} (${u.username}) - ${mes.nome} 2025`
+          });
+        }
+      }
+    }
+
+    // Conteúdos de apresentação originais
+    const conteudosApresentacao = [
+      { titulo: 'Bem-vindo ao Hotel Canino', tipo: 'apresentacao', corpo: '<p>O espaço ideal para acolher o seu melhor amigo. Cuidamos com carinho e profissionalismo.</p>' },
+      { titulo: 'A Nossa Missão', tipo: 'apresentacao', corpo: '<p>Proporcionar uma estadia segura, confortável e feliz para todos os cães.</p>' },
+      { titulo: 'Instalações Modernas', tipo: 'apresentacao', corpo: '<p>Boxes climatizadas, espaços verdes e videovigilância garantem conforto e segurança.</p>' },
+      { titulo: 'Alimentação Personalizada', tipo: 'apresentacao', corpo: '<p>Adotamos dietas personalizadas conforme as instruções do tutor.</p>' },
+      { titulo: 'Atividades Diárias', tipo: 'apresentacao', corpo: '<p>Passeios, brincadeiras e socialização fazem parte da rotina dos nossos hóspedes.</p>' },
+      { titulo: 'Acompanhamento Veterinário', tipo: 'apresentacao', corpo: '<p>Temos parcerias com clínicas veterinárias para garantir assistência sempre que necessário.</p>' },
+      { titulo: 'Banhos e Tosquias', tipo: 'apresentacao', corpo: '<p>Serviços de estética e higiene realizados com produtos de qualidade.</p>' },
+      { titulo: 'Socialização Segura', tipo: 'apresentacao', corpo: '<p>Promovemos interações seguras entre cães, sempre com supervisão.</p>' },
+      { titulo: 'Equipa Dedicada', tipo: 'apresentacao', corpo: '<p>Profissionais apaixonados por animais, preparados para todas as situações.</p>' },
+      { titulo: 'Acesso Online', tipo: 'apresentacao', corpo: '<p>Os tutores podem acompanhar as reservas e atualizar dados pelo nosso portal.</p>' },
+      { titulo: 'Feedback Diário', tipo: 'apresentacao', corpo: '<p>Enviamos informações diárias sobre o bem-estar do seu cão durante a estadia.</p>' },
+      { titulo: 'Transporte Seguro', tipo: 'apresentacao', corpo: '<p>Oferecemos recolha e entrega em veículo adaptado para cães.</p>' },
+      { titulo: 'Horário Flexível', tipo: 'apresentacao', corpo: '<p>Check-in e check-out flexíveis para maior comodidade.</p>' },
+      { titulo: 'Reservas Online', tipo: 'apresentacao', corpo: '<p>Sistema de reservas online intuitivo e disponível 24h.</p>' },
+      { titulo: 'Testemunhos de Clientes', tipo: 'apresentacao', corpo: '<p>Partilhamos experiências reais de quem confia no Hotel Canino.</p>' }
+    ];
+
+    // Conteúdos para Homepage: Eventos
+    const conteudosEventos = [
+      { titulo: 'Feira de Adoção Anual', tipo: 'Eventos', corpo: '<p>Participe na nossa feira e encontre o seu novo melhor amigo!</p>' },
+      { titulo: 'Dia de Spa Canino', tipo: 'Eventos', corpo: '<p>Um dia de cuidados especiais: banho, tosquia e mimos para o seu cão.</p>' },
+      { titulo: 'Workshops de Treino', tipo: 'Eventos', corpo: '<p>Aprenda técnicas de treino e reforço positivo com os nossos especialistas.</p>' },
+      { titulo: 'Passeio Solidário', tipo: 'Eventos', corpo: '<p>Junte-se a nós para um passeio e ajude instituições de proteção animal.</p>' }
+    ];
+
+    // Conteúdos para Homepage: Notícias
+    const conteudosNoticias = [
+      { titulo: 'Nova Parceria Veterinária', tipo: 'Notícias', corpo: '<p>Firmámos um protocolo com a Clínica VetPet para descontos exclusivos.</p>' },
+      { titulo: 'Ampliação das Instalações', tipo: 'Notícias', corpo: '<p>Inaugurámos novas boxes individuais e áreas de lazer.</p>' },
+      { titulo: 'Certificação de Qualidade', tipo: 'Notícias', corpo: '<p>Somos o primeiro hotel canino certificado pela Associação AnimalCare.</p>' },
+      { titulo: 'Equipa Premiada', tipo: 'Notícias', corpo: '<p>A nossa equipa venceu o Prémio Excelência em Cuidados Animais 2025.</p>' }
+    ];
+
+    // Conteúdos para Homepage: Promoções
+    const conteudosPromocoes = [
+      { titulo: 'Promoção de Verão 20%', tipo: 'Promoções', corpo: '<p>Desconto de 20% em reservas de julho e agosto.</p>' },
+      { titulo: 'Pacote Fim de Semana', tipo: 'Promoções', corpo: '<p>Reserve sexta a domingo com tarifa especial.</p>' },
+      { titulo: 'Desconto Lealdade', tipo: 'Promoções', corpo: '<p>10% de desconto para clientes frequentes.</p>' },
+      { titulo: 'Oferta de Brinquedo', tipo: 'Promoções', corpo: '<p>Brinquedo grátis para cada nova reserva acima de 3 dias.</p>' }
+    ];
+
+    // Conteúdos para Homepage: Outras informações
+    const conteudosOutras = [
+      { titulo: 'Dicas de Viagem', tipo: 'Outras informações', corpo: '<p>Checklist para uma viagem tranquila com o seu cão.</p>' },
+      { titulo: 'Cuidados no Verão', tipo: 'Outras informações', corpo: '<p>Proteja o seu cão do calor com recomendações práticas.</p>' },
+      { titulo: 'Alimentação Saudável', tipo: 'Outras informações', corpo: '<p>Sugestões de dietas equilibradas para diferentes idades.</p>' },
+      { titulo: 'Sinalização de Emergência', tipo: 'Outras informações', corpo: '<p>Como agir em caso de acidentes ou doenças súbitas.</p>' }
+    ];
+
+    // Inserir todos os conteúdos
+    await Conteudo.insertMany([
+      ...conteudosApresentacao,
+      ...conteudosEventos,
+      ...conteudosNoticias,
+      ...conteudosPromocoes,
+      ...conteudosOutras
+    ]);
+
+    console.log('✅ Dados iniciais criados com sucesso.');
+    console.log('📊 Estatísticas:');
+    console.log(`- ${utilizadores.length} utilizadores criados`);
+    console.log(`- ${usuariosNormais.length * 3} cães criados`);
+    console.log(`- Reservas criadas para 9 meses (Janeiro a Dezembro)`);
+    console.log(`- ${conteudosApresentacao.length + conteudosEventos.length + conteudosNoticias.length + conteudosPromocoes.length + conteudosOutras.length} conteúdos criados`);
   } catch (error) {
-    console.error('\n❌ ERRO FATAL:', error);
-    console.error('Stack:', error.stack);
+    console.error('❌ Erro ao criar dados iniciais:', error);
   } finally {
-    console.log('\n🔄 Desconectando...');
-    await mongoose.disconnect();
-    console.log('✅ Desconectado');
+    mongoose.disconnect();
   }
 }
 
-// Adicionar listeners para debug
-mongoose.connection.on('connected', () => {
-  console.log('🔗 Mongoose conectado');
-});
-
-mongoose.connection.on('error', (err) => {
-  console.error('❌ Erro de conexão Mongoose:', err);
-});
-
-mongoose.connection.on('disconnected', () => {
-  console.log('🔌 Mongoose desconectado');
-});
-
-seedDatabase().catch(error => {
-  console.error('❌ Erro não capturado:', error);
-  process.exit(1);
-});
+seedDatabase();
