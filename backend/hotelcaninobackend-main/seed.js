@@ -231,7 +231,7 @@ async function seedDatabase() {
     console.log('📊 Estatísticas:');
     console.log(`- ${utilizadores.length} utilizadores criados`);
     console.log(`- ${usuariosNormais.length * 3} cães criados`);
-    console.log(`- Reservas criadas para 12 meses (Janeiro a Dezembro)`);
+    console.log(`- Reservas criadas para 9 meses (Janeiro a Dezembro)`);
     console.log(`- ${conteudosApresentacao.length + conteudosEventos.length + conteudosNoticias.length + conteudosPromocoes.length + conteudosOutras.length} conteúdos criados`);
   } catch (error) {
     console.error('❌ Erro ao criar dados iniciais:', error);
